@@ -78,7 +78,7 @@
   <body>
     <section id='abstract'>
       <p>
-	The Basic SEPA Payment specification describes the data formats used by the PaymentRequest API [[!PAYMENTREQUESTAPI]] to support payment by SEPA payments such as SEPA Credit Transfer (SCT), SEPA Direct Debit (SDD CORE) and SEPA direct Debit between corporates (SDD B2B)
+	The Basic CT-DD Payment specification describes the data formats used by the PaymentRequest API [[!PAYMENTREQUESTAPI]] to support payment by Credit Transfer and Direct Debit including to the specific SEPA specification (SEPA Credit Transfer (SCT), SEPA Direct Debit (SDD CORE) and SEPA direct Debit between corporates (SDD B2B))
       </p>
     </section>
 
@@ -92,8 +92,8 @@
     <section class='informative'>
       <h2>Introduction</h2>
       <p>
-	This specification is a Payment Transaction Message Specification used by the PaymentRequest API [[!PAYMENTREQUESTAPI]] to support payment by SEPA payments such as SEPA Credit Transfer and SEPA direct debit. It is intended to provide compatibility for merchants who currently request account details from customers to ease adoption of the PaymentRequest API.</p>
-      <p>In the future, merchants should favor payment methods that provide a tokenized response rather than clear text credit card details.</p>
+	This specification is a Payment Transaction Message Specification used by the PaymentRequest API [[!PAYMENTREQUESTAPI]] to support Credit Transfer and Direct Debits. It is intended to provide compatibility for merchants who currently request account details from customers to ease adoption of the PaymentRequest API.</p>
+      <p>In the future, merchants may favor payment methods that provide a tokenized response rather than clear text details.</p>
     </section>
 
     <section id="dependencies"> 
@@ -180,13 +180,13 @@ The user copy this label in the remittance information (or equivalent) of the cr
     <section id="init-data">
       <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
       <p>This section describes payment method specific data that is supplied as part of the data argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing Basic SEPA Payment methods.</p>
+      <p>There is no payment method specific data used by the PaymentRequest constructor when processing Basic CT-DD Payment methods.</p>
     </section>
 
     <section id="response">
       <h2>Payment Method Response</h2>
       <p>The <dfn><code>BasicCTDDResponse</code></dfn> dictionary contains the response from the
-      PaymentRequest API when a user accepts payment with a Basic Payment SEPA payment method.</p>
+      PaymentRequest API when a user accepts payment with a Basic Payment CT-DD payment method.</p>
 
       <section>
       <h2>BasicCTDDResponse</h2>
