@@ -129,14 +129,14 @@
 	<tr>
 	  <td>CT</td>
 	  <td>Credit Transfer</td>
-	  <td>In this scenario, the user should be invited to process a credit transfer by his own.  The merchant gives a label and tis IBAN (or equivalent) and BIC (or equivalent).
-The user copy this label in the remittance information (or equivalent) of the credit transfer. There is no automatic link from the web validation to the credit transfer validation.
+	  <td>In this scenario, the user should be invited to process a credit transfer initiated out of band themselves.  The merchant gives a reference and their IBAN (or equivalent) and BIC (or equivalent).
+The user copy this reference in the remittance information (or equivalent) of the credit transfer form. There is no automatic link from the web validation to the credit transfer validation.
 	    Could be used for any credit transfer in the world.</td>
 	</tr>
 	<tr>
 	  <td>SCT</td>
 	  <td>SEPA CREDIT TRANSFER</td>
-	  <td>This scenario is a specific Credit Transfer scenario where the webmerchant accepts only SEPA credit Transfer. This is a regional (even a big one) limitation. Fields provided by merchant are, IBAN, BIC (in SEPA non EU countries) and REMITTANCE Information</td>
+	  <td>This scenario is a specific Credit Transfer scenario where the merchant accepts only SEPA credit Transfer. This is a regional (even a big one) limitation. Fields provided by merchant are, IBAN, BIC (in SEPA non EU countries) and REMITTANCE Information</td>
 	</tr>
 	<tr>
 	  <td>DD</td>
@@ -177,43 +177,149 @@ The user copy this label in the remittance information (or equivalent) of the cr
       </table>
     </section>
 
-    <section id="init-data">
-      <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
-      <p>This section describes payment method specific data that is supplied as part of the data argument to the PaymentRequest constructor.</p>
-      <p>There is no payment method specific data used by the PaymentRequest constructor when processing Basic CT-DD Payment methods.</p>
-    </section>
+	<section id="init-data">
+	  <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
+	  <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
+      argument to the PaymentRequest constructor.</p>
 
+	  
+  
+      <section>	
+
+		<h2>BasicCTRequestData</h2>
+        <pre class="idl">
+          dictionary BasicCTRequestData {
+            required DOMString IBAN;
+			DOMString BIC;
+			DOMString Reference;
+          };
+        </pre>
+
+	  <p>The <dfn><code>BasicCTRequestData</code></dfn> dictionary contains the request from the
+	  PaymentRequest API when a user accepts payment with a Manual Credit Transfer payment method.</p>
+			
+		
+	  </section>
+
+ 
+      <section>		
+
+		<h2>SCTRequestData</h2>
+        <pre class="idl">
+          dictionary SCTRequestData {
+            required DOMString IBAN;
+			DOMString BIC;
+			DOMString Reference;
+			DOMSting Purpose;
+			DOMString Category;
+          };
+        </pre>
+		
+		<p>The <dfn><code>SCTRequestData</code></dfn> dictionary contains the request from the
+	    PaymentRequest API when a user accepts payment with a SEPA Credit Transfer payment method.</p>
+	  
+	  </section>
+ 
+      <section>	 
+
+		<h2>BasicDDRequestData</h2>
+        <pre class="idl">
+          dictionary BasicDDRequestData {
+            required DOMString IBAN;
+			DOMString BIC;
+			DOMString Reference;
+          };
+        </pre>
+
+		<p>The <dfn><code>BasicDDRequestData</code></dfn> dictionary contains the request from the
+		PaymentRequest API when a user accepts payment with a Manual Direct Debit payment method.</p>
+
+	  </section>
+ 
+ 	  <section>
+		<h2>SDDRequestData</h2>
+        <pre class="idl">
+          dictionary SDDRequestData {
+            required DOMString TransactionType;
+			DOMString ICS;
+			DOMString Remittance;
+			DOMString Reference;
+			DOMSting Purpose;
+			DOMString Category;
+			DOMString MandateRef;
+          };
+        </pre>
+
+		<p>The <dfn><code>SDDRequestData</code></dfn> dictionary contains the request from the
+        PaymentRequest API when a user accepts payment with a SEPA Direct Debit Core payment method.</p>
+
+      </section>
+       
+	   <p>
+          The dictionaries contains the following fields:
+       </p>
+
+	    <dl>
+          <dt><dfn><code>IBAN</code></dfn></dt>
+          <dd>The <code>IBAN</code> field contains International Bank Identification Number of the Payee</dd>
+        </dl>
+
+      </section>
+	  
+	<div class="issue" title="Sub-class modelling required?">
+      The above types need some consideration for modelling via an inheritance/subclass relationships
+    </div>
+	
+    </section>
+	
     <section id="response">
       <h2>Payment Method Response</h2>
       <p>The <dfn><code>BasicCTDDResponse</code></dfn> dictionary contains the response from the
       PaymentRequest API when a user accepts payment with a Basic Payment CT-DD payment method.</p>
 
+	  <section>
+		<h2>BasicCTResponse</h2>
+		<pre class="idl"> 
+
+		</pre>
+	  </section>
+	  
       <section>
-      <h2>BasicCTDDResponse</h2>
+		<h2>SCTResponse</h2>
+		<pre class="idl"> 
+			dictionary  SCTResponse {
+				required DOMString       IdentString;
+				required DOMString       DbtrName;
+				required DOMString       SemAcct;
+				required DOMString       Address
+				required DOMString       PostCode
+				required DOMString       Country
+				required DOMString       BIC
+			};
+		</pre>
+	  </section>
+	  
+  	  <section>
+		<h2>BasicDDResponse</h2>
+		<pre class="idl"> 
 
-      <pre class="idl">
-	Dictionary BasicDDResponse {
- 
-	 required DOMString       DbtrName;
-	 required DOMString       DbtrUMR;
- 	 required DOMString       Address of the Debtor
-	 required DOMString       PostCode
-	 required DOMString       Country
-	 required DOMString       BIC
-	} ;
+		</pre>
+	  </section>
 
-	Dictionary  BasicCTResponse {
-
-	 required DOMString       IdentString;
-	 required DOMString       DbtrName;
-	 required DOMString       SemAcct;
-	 required DOMString       Address
-	 required DOMString       PostCode
-	 required DOMString       Country
-	 required DOMString       BIC
-        };
-      </pre>
-
+	  <section>		
+		<h2>SDDResponse</h2>
+		<pre class="idl">
+			dictionary SDDResponse {
+				required DOMString       DbtrName;
+				required DOMString       DbtrUMR;
+				required DOMString       Address of the Debtor
+				required DOMString       PostCode
+				required DOMString       Country
+				required DOMString       BIC
+			} ;
+		</pre>
+	  </section>
+		
       <p>
         The <code>BasicCTDDResponse</code> dictionary contains the following fields:
       </p>
