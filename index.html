@@ -188,28 +188,53 @@ The user copy this reference in the remittance information (or equivalent) of th
       </table>
     </section>
 
+    <section id="flow">
+    
+      <h2>Payment Method Flow</h2>
+      <p>The following represent the flow for the supported <a>payment method identifier</a> strings as they could be used by a website</p>
+      <p>The blue call-outs show where and how the API is invoked.</p>
+
+			<section>
+				<h3>Credit Transfer</h3>
+				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/CT.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/gh-pages/CT.pml"/></a></div>
+			</section>
+				
+			<section>
+				<h3>SEPA Credit Transfer</h3>
+				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"/></a></div>
+			</section>
+			
+			<section>
+				<h3>Direct Debit</h3>
+				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/DD.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/DD.pml"/></a></div>
+			</section>
+			
+			<section>
+				<h3>SEPA Direct Debit</h3>	
+				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SDD.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SDD.pml"/></a></div>
+			</section>
+						
+    </section>
+	
 	<section id="init-data">
 	  <h2>Payment Method Specific Data for the PaymentRequest constructor</h2>
 	  <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
-      argument to the PaymentRequest constructor.</p>
+			argument to the PaymentRequest constructor.</p>
 
-	  
-  
-      <section>	
+	  <section>	
 
-		<h2>BasicCTRequestData</h2>
-        <pre class="idl">
-          dictionary BasicCTRequestData {
-            required DOMString IBAN;
-			DOMString BIC;
-			DOMString Reference;
-          };
-        </pre>
+			<h2>BasicCTRequestData</h2>
+      <pre class="idl">
+        dictionary BasicCTRequestData {
+					required DOMString IBAN;
+					DOMString BIC;
+					DOMString Reference;
+        };
+      </pre>
 
-	  <p>The <dfn><code>BasicCTRequestData</code></dfn> dictionary contains the request from the
-	  PaymentRequest API when a user accepts payment with a Manual Credit Transfer payment method.</p>
-			
-		
+			<p>The <dfn><code>BasicCTRequestData</code></dfn> dictionary contains the request from the
+				PaymentRequest API when a user accepts payment with a Manual Credit Transfer payment method.</p>
+					
 	  </section>
 
  
