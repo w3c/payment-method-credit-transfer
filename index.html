@@ -13,6 +13,8 @@
           editors: [
                 {   name:       "Cyril Vignet",
                     company:    "BPCE" },
+								{   name:       "Matt Saxon",
+                    company:    "Worldpay" }
           ],
           useExperimentalStyles: true,
           license:      "w3c-software-doc",
@@ -128,19 +130,19 @@
         <tr><th>Identifier String</th><th>Description</th><th>Comment</th></tr>
 	<tr>
 	  <td>CT</td>
-	  <td>Credit Transfer</td>
-	  <td>In this scenario, the user should be invited to process a credit transfer initiated out of band themselves.  The merchant gives a reference and their IBAN (or equivalent) and BIC (or equivalent).
-The user copy this reference in the remittance information (or equivalent) of the credit transfer form. There is no automatic link from the web validation to the credit transfer validation.
-	    Could be used for any credit transfer in the world.</td>
+	  <td>Basic Credit Transfer</td>
+		<td>In this scenario, the user will be expected to process a credit transfer initiated out of band themselves.  The merchant gives a payment reference and their IBAN (or equivalent) and BIC (or equivalent).
+			The user copies this reference in the remittance information (or equivalent) of the credit transfer form. There is no automatic link from the web validation to the credit transfer validation.
+	    This could be used for any credit transfer in the world.</td>
 	</tr>
 	<tr>
 	  <td>SCT</td>
-	  <td>SEPA CREDIT TRANSFER</td>
+	  <td>SEPA Credit Transfer</td>
 	  <td>This scenario is a specific Credit Transfer scenario where the merchant accepts only SEPA credit Transfer. This is a regional (even a big one) limitation. Fields provided by merchant are, IBAN, BIC (in SEPA non EU countries) and REMITTANCE Information</td>
 	</tr>
 	<tr>
 	  <td>DD</td>
-	  <td>DIRECT DEBIT</td>
+	  <td>Basic Direct Debit</td>
 	  <td>In this generic scenario the user will provide an IBAN (or equivalent) to the merchant. The merchant will process a direct debit. There is no link at this stage to mandate process that are necessary in some kind of Direct Debit Scheme.</td>
 	</tr>
 	<tr>
@@ -195,8 +197,8 @@ The user copy this reference in the remittance information (or equivalent) of th
       <p>The blue call-outs show where and how the API is invoked.</p>
 
 			<section>
-				<h3>Credit Transfer</h3>
-				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/CT.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/gh-pages/CT.pml"/></a></div>
+				<h3>Basic Credit Transfer</h3>
+				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/CT.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/CT.pml"/></a></div>
 			</section>
 				
 			<section>
@@ -205,7 +207,7 @@ The user copy this reference in the remittance information (or equivalent) of th
 			</section>
 			
 			<section>
-				<h3>Direct Debit</h3>
+				<h3>Basic Direct Debit</h3>
 				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/DD.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/DD.pml"/></a></div>
 			</section>
 			
@@ -221,162 +223,156 @@ The user copy this reference in the remittance information (or equivalent) of th
 	  <p>This section describes payment method specific data that is supplied as part of the <code>data</code>
 			argument to the PaymentRequest constructor.</p>
 
+		<div class="issue" title="Sub-class modelling required?">
+			The below types need some consideration for modelling via an inheritance/subclass relationships
+		</div>	
+			
 	  <section>	
-
-			<h2>BasicCTRequestData</h2>
+			<h2>BasicCTRequest</h2>
+			<p>The <dfn><code>BasicCTRequest</code></dfn> dictionary contains the request from the
+				PaymentRequest API when a user accepts payment with a Manual Credit Transfer payment method.</p>
+			
       <pre class="idl">
-        dictionary BasicCTRequestData {
+        dictionary BasicCTRequest {
+					required DOMString PayeeIBAN;
+					DOMString PayeeBIC;
+					DOMString PayeePaymentReference;
+        };
+      </pre>
+	  </section>
+ 
+    <section>		
+			<h2>SCTRequest</h2>
+			<p>The <dfn><code>SCTRequest</code></dfn> dictionary contains the request from the
+				PaymentRequest API when a user accepts payment with a SEPA Credit Transfer payment method.</p>
+	  
+			<pre class="idl">
+        dictionary SCTRequest {
+          required DOMString IBAN;
+					DOMString BIC;
+					DOMString Reference;
+					DOMSting Purpose;
+					DOMString Category;
+				};
+       </pre>
+	  </section>
+ 
+    <section>	 
+			<h2>BasicDDRequest</h2>
+			<p>The <dfn><code>BasicDDRequest</code></dfn> dictionary contains the request from the
+				PaymentRequest API when a user accepts payment with a Manual Direct Debit payment method.</p>
+      <pre class="idl">
+        dictionary BasicDDRequest {
 					required DOMString IBAN;
 					DOMString BIC;
 					DOMString Reference;
         };
       </pre>
-
-			<p>The <dfn><code>BasicCTRequestData</code></dfn> dictionary contains the request from the
-				PaymentRequest API when a user accepts payment with a Manual Credit Transfer payment method.</p>
-					
-	  </section>
-
- 
-      <section>		
-
-		<h2>SCTRequestData</h2>
-        <pre class="idl">
-          dictionary SCTRequestData {
-            required DOMString IBAN;
-			DOMString BIC;
-			DOMString Reference;
-			DOMSting Purpose;
-			DOMString Category;
-          };
-        </pre>
-		
-		<p>The <dfn><code>SCTRequestData</code></dfn> dictionary contains the request from the
-	    PaymentRequest API when a user accepts payment with a SEPA Credit Transfer payment method.</p>
-	  
-	  </section>
- 
-      <section>	 
-
-		<h2>BasicDDRequestData</h2>
-        <pre class="idl">
-          dictionary BasicDDRequestData {
-            required DOMString IBAN;
-			DOMString BIC;
-			DOMString Reference;
-          };
-        </pre>
-
-		<p>The <dfn><code>BasicDDRequestData</code></dfn> dictionary contains the request from the
-		PaymentRequest API when a user accepts payment with a Manual Direct Debit payment method.</p>
-
 	  </section>
  
  	  <section>
-		<h2>SDDRequestData</h2>
-        <pre class="idl">
-          dictionary SDDRequestData {
-            required DOMString TransactionType;
-			DOMString ICS;
-			DOMString Remittance;
-			DOMString Reference;
-			DOMString Purpose;
-			DOMString Category;
-			DOMString MandateRef;
-          };
-        </pre>
-
-		<p>The <dfn><code>SDDRequestData</code></dfn> dictionary contains the request from the
+			<h2>SDDRequest</h2>
+			<p>The <dfn><code>SDDRequest</code></dfn> dictionary contains the request from the
         PaymentRequest API when a user accepts payment with a SEPA Direct Debit Core payment method.</p>
-
-      </section>
-       
-	   <p>
-          The dictionaries contains the following fields:
-       </p>
-
-	    <dl>
-          <dt><dfn><code>IBAN</code></dfn></dt>
-          <dd>The <code>IBAN</code> field contains International Bank Identification Number of the Payee</dd>
-        </dl>
-
-      </section>
-	  
-	<div class="issue" title="Sub-class modelling required?">
-      The above types need some consideration for modelling via an inheritance/subclass relationships
-    </div>
-	
+      <pre class="idl">
+        dictionary SDDRequest {
+          required DOMString TransactionType;
+					DOMString ICS;
+					DOMString Remittance;
+					DOMString Reference;
+					DOMString Purpose;
+					DOMString Category;
+					DOMString MandateRef;
+        };
+      </pre>
     </section>
 	
-    <section id="response">
-      <h2>Payment Method Response</h2>
-      <p>The <dfn><code>BasicCTDDResponse</code></dfn> dictionary contains the response from the
-      PaymentRequest API when a user accepts payment with a Basic Payment CT-DD payment method.</p>
+		<section>
+			<h2>Request Fields</h2>
+			<p>The dictionaries contains the following fields:</p>
 
-	  <section>
-		<h2>BasicCTResponse</h2>
-		<pre class="idl"> 
-
-		</pre>
-	  </section>
+			<dl>
+				<dt><dfn><code>PayeeIBAN</code></dfn></dt>
+				<dd>The <code>PayeeIBAN</code> field contains the International Bank Identification Number of the Payee</dd>
+				<dt><dfn><code>PayeeBIC</code></dfn></dt>
+				<dd>The <code>PayeeBIC</code> field contains the Business Identification Code of the Payee</dd>
+				<dt><dfn><code>PayeePaymentreference</code></dfn></dt>
+				<dd>The <code>PayeePaymentreference</code> field contains a payee reference which will be used for reconciliation</dd>
+			</dl>
 	  
-      <section>
-		<h2>SCTResponse</h2>
-		<pre class="idl"> 
-			dictionary  SCTResponse {
-				required DOMString       IdentString;
-				required DOMString       DbtrName;
-				required DOMString       SemAcct;
-				required DOMString       Address
-				required DOMString       PostCode
-				required DOMString       Country
-				required DOMString       BIC
-			};
-		</pre>
 	  </section>
-	  
-  	  <section>
-		<h2>BasicDDResponse</h2>
-		<pre class="idl"> 
+	</section>
+	
+	<section id="response">
+		<h2>Payment Method Response</h2>
+		<p>The <dfn><code>BasicCTDDResponse</code></dfn> dictionary contains the response from the
+		PaymentRequest API when a user accepts payment with a Basic Payment CT-DD payment method.</p>
 
-		</pre>
-	  </section>
+		<section>
+			<h2>BasicCTResponse</h2>
+			<p>There is no data response from the Basic CT request.</p>		
+		</section>
+	
+		<section>
+			<h2>SCTResponse</h2>
+			<pre class="idl"> 
+				dictionary SCTResponse {
+					required DOMString       IdentString;
+					required DOMString       DbtrName;
+					required DOMString       SemAcct;
+					required DOMString       Address;
+					required DOMString       PostCode;
+					required DOMString       Country;
+					required DOMString       BIC;
+				};
+			</pre>
+		</section>
+	
+		<section>
+			<h2>BasicDDResponse</h2>
+			<pre class="idl"> 
 
-	  <section>		
-		<h2>SDDResponse</h2>
-		<pre class="idl">
-			dictionary SDDResponse {
-				required DOMString       DbtrName;
-				required DOMString       DbtrUMR;
-				required DOMString       Address of the Debtor
-				required DOMString       PostCode
-				required DOMString       Country
-				required DOMString       BIC
-			} ;
-		</pre>
-	  </section>
-		
-      <p>
-        The <code>BasicCTDDResponse</code> dictionary contains the following fields:
-      </p>
+			</pre>
+		</section>
+
+		<section>		
+			<h2>SDDResponse</h2>
+			<pre class="idl">
+				dictionary SDDResponse {
+					required DOMString       DbtrName;
+					required DOMString       DbtrUMR;
+					required DOMString       DebtorAddress;
+					required DOMString       PostCode;
+					required DOMString       Country;
+					required DOMString       BIC;
+				};
+			</pre>
+		</section>
+	
+	<section>
+			<h2>Response Fields</h2>
+			<p>The dictionaries contains the following fields:</p>
+			<p>
+				The <code>BasicCTDDResponse</code> dictionary contains the following fields:
+			</p>
 
       <dl>
-	<dt><dfn<code>DbtrName</code></dfn></dt>
-	       <dd>Name of the Debtor . First name + last name of the debtor. For a company, legal name..</dd>
-<dt><dfn<code>DbtrUMR</code></dfn></dt>
-       <dd>Debtor’s Unique reference of Mandate that was given during the mandate or e-mandate phase. Those phases are out of the scope of WebPayment.</dd>
-<dt><dfn<code>SemAcct</code></dfn></dt>
-       <dd>Account number used in SEPAmail flows : QXBAN is a specific IBAN (same structure) with QX as a proprietary country code. It is used as a routing identifier for SEPAmail flows. </dd>
-<dt><dfn<code>PostCode</code></dfn></dt>
-		     <dd>Postal code/city of the Debtor .</dd>
-<dt><dfn<code>Country</code></dfn></dt>
-       <dd>Debtor’s country of residence</dd>
-<dt><dfn<code>BIC</code></dfn></dt>
-       <dd>The BIC code of the Debtor Bank</dd>
-       </dl>
+				<dt><dfn><code>DbtrName</code></dfn></dt>
+	      <dd>Name of the Debtor . First name + last name of the debtor. For a company, legal name..</dd>
+				<dt><dfn><code>DbtrUMR</code></dfn></dt>
+				<dd>Debtor’s Unique reference of Mandate that was given during the mandate or e-mandate phase. Those phases are out of the scope of WebPayment.</dd>
+				<dt><dfn><code>SemAcct</code></dfn></dt>
+				<dd>Account number used in SEPAmail flows : QXBAN is a specific IBAN (same structure) with QX as a proprietary country code. It is used as a routing identifier for SEPAmail flows. </dd>
+				<dt><dfn><code>PostCode</code></dfn></dt>
+		    <dd>Postal code/city of the Debtor .</dd>
+				<dt><dfn><code>Country</code></dfn></dt>
+				<dd>Debtor’s country of residence</dd>
+				<dt><dfn><code>BIC</code></dfn></dt>
+				<dd>The BIC code of the Debtor Bank</dd>
+			</dl>
 
-<p>Note: Other field should be defined by other CT initiation scheme or DD mandate scheme.</p>
-      </section>
+			<p>Note: Other field should be defined by other CT initiation scheme or DD mandate scheme.</p>
+    </section>
 
   </body>
 </html>
