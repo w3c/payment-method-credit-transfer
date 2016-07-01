@@ -250,8 +250,9 @@
 						required DOMString PayeeIBAN;
 						DOMString PayeeBIC;
 						required DOMString PayeePaymentReference;
-						DOMSting Purpose;
-						DOMString Category;
+						required DOMString PayeeName;
+						required DOMSting Purpose;
+						required DOMString Category;
 					};
 				 </pre>
 			</section>
@@ -281,7 +282,7 @@
 						DOMString Reference;
 						DOMString Purpose;
 						DOMString Category;
-						DOMString MandateRef;
+						DOMString MandateReference;
 					};
 				</pre>
 			</section>
@@ -291,12 +292,31 @@
 				<p>The dictionaries contains the following fields:</p>
 
 				<dl>
+				
 					<dt><dfn><code>PayeeIBAN</code></dfn></dt>
 					<dd>The <code>PayeeIBAN</code> field contains the International Bank Identification Number of the Payee</dd>
+					
 					<dt><dfn><code>PayeeBIC</code></dfn></dt>
 					<dd>The <code>PayeeBIC</code> field contains the Business Identification Code of the Payee</dd>
-					<dt><dfn><code>PayeePaymentreference</code></dfn></dt>
-					<dd>The <code>PayeePaymentreference</code> field contains a payee reference which will be used for reconciliation</dd>
+					
+					<dt><dfn><code>PayeePaymentReference</code></dfn></dt>
+					<dd>The <code>PayeePaymentReference</code> field contains a payee reference which will be used for reconciliation</dd>
+					
+					<dt><dfn><code>PayeeName</code></dfn></dt>
+					<dd>The <code>PayeeName</code> Name of the Payee. First name, Last name or, for a company the legal name.</dd>
+
+					<dt><dfn><code>Purpose</code></dfn></dt>
+					<dd>The <code>Purpose</code> tbc</dd>
+
+					<dt><dfn><code>Category</code></dfn></dt>
+					<dd>The <code>Category</code> tbc</dd>
+					
+					<dt><dfn><code>ICS</code></dfn></dt>
+					<dd>The <code>ICS</code> Identifier of the creditor according to the SDD Scheme</dd>
+
+					<dt><dfn><code>MandateReference</code></dfn></dt>
+					<dd>The <code>MandateReference</code> unique reference of mandate</dd>
+
 				</dl>
 			
 			</section>
