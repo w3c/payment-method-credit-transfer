@@ -152,6 +152,12 @@
 			<section>
 				<h3>Consumer Initiated SEPA Credit Transfer</h3>
 				<div><a href="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"><img width="100%" src="http://www.plantuml.com/plantuml/proxy?fmt=svg&src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"/></a></div>
+
+
+				<div class="issue" title="Flow update required">
+				Update to match field exchanges
+				</div>	
+				
 			</section>
 						
     </section>
@@ -170,11 +176,21 @@
 				<p>The <dfn><code>PullSCTRequest</code></dfn> dictionary contains the request from the
 					PaymentRequest API when a user accepts payment with a SEPA Credit Transfer payment method.</p>
 			
-				<p>The fields are based upon the Customer to Bank Credit Transfer Initiation (DS-01) specification from http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/</p>
+				<p>The fields are based upon the Customer to Bank Credit Transfer Initiation (DS-01) specification from <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a></p>
 				<p>However the field names are amended to follow closely with roles defined in the W3C WebPayment specification. Mappings are provided in the field descriptions.</p>
-			
+					
+				<div class="issue" title="Mapping information to be added?">
+				Add information from SEPA Rule Book mapping from analysis spreadsheet
+				</div>	
+				
+				<div class="issue" title="Other references useful?">
+				We have reference the SEPA Rule Book, is ISO20022 PAIN 001.006 (or 003) message useful here?
+				</div>	
+					
 				<pre class="idl">
 					dictionary PullSCTRequest {
+									sequence<DOMString> requiredFields;
+										
 						required	DOMString PayeeIBAN;
 									DOMString PayeeName;
 									DOMString PayeeIdentificationCode;
@@ -198,7 +214,17 @@
 				<p>The dictionaries contains the following fields:</p>
 
 				<dl>
-				
+					<dt><dfn><code>requiredFields</code></dfn></dt>
+					<dd>The <code>requiredFields</code> field contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument must fail as this is a push payment.</dd>
+
+					<div class="issue" title="Sub-class modelling required?">
+					The above field is also required in the BasicCardRequest, does this need modelling in the a superclass or base api?
+					</div>	
+					
+					<div class="issue" title="Failed payment edge cases?">
+					The above field is required, but this can result in failed payments after 'Authorise' clicked. Should we have a better modelling (e.g. using subclasses) to allow for a more fine grained matching of apps to requests? Does the PMI specification need to support this?
+					</div>	
+					
 					<dt><dfn><code>PayeeIBAN</code></dfn></dt>
 					<dd>The <code>PayeeIBAN</code> field contains the International Bank Identification Number of the Payee</dd>
 
@@ -212,16 +238,28 @@
 					<dd>The <code>PayeePaymentIdentification</code> field contains a payee identification which will be used for reconciliation</dd>
 
 					<dt><dfn><code>PurposeCode</code></dfn></dt>
-					<dd>The <code>PurposeCode</code> ISO20022 Purpose Code from https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls</dd>
+					<dd>The <code>PurposeCode</code> ISO20022 Purpose Code from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a></dd>
 
 					<dt><dfn><code>CategoryPurposeCode</code></dfn></dt>
-					<dd>The <code>CategoryPurposeCode</code> ISO20022 Category Purpose code https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls, defaults to EPAY (ePayment) if excluded</dd>
+					<dd>The <code>CategoryPurposeCode</code> ISO20022 Category Purpose code from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>, defaults to EPAY (ePayment) if excluded</dd>
 
 					<dt><dfn><code>PreferredProcessingDate</code></dfn></dt>
 					<dd>The <code>PreferredProcessingDate</code> merchants preferred processing date</dd>
 
+					<div class="issue" title="Field date type">
+					The above field needs changing to a date type
+					</div>
+					
 					<dt><dfn><code>NotificationURL</code></dfn></dt>
-					<dd>The <code>NotificationURL</code> is the webhook that will be called by the payment app to update the merchant. This can be used for failure scenarios.</dd>			
+					<dd>The <code>NotificationURL</code> is the endpoint (a.k.a. webhook) that will be called by the payment app to update the merchant. This can be used to protect against various failure scenarios.</dd>			
+
+					<div class="issue" title="Message authentication">
+					We need to investigate a means for message authentication on the above call-back. If this field is commonyl used, e.g. AliPay also, there is a case for specifying this in a superclass or other spec
+					</div>
+					
+					<div class="issue" title="Field lengths">
+					The field types need specifying for the above fields and also the max lengths for strings
+					</div>
 					
 				</dl>
 			
@@ -249,7 +287,8 @@
 									DOMString		BuyerIdentificationCode;
 									DOMString		PayerIdentificationCode;
 					};
-				</pr
+				</pre>
+				
 			</section>
 	
 			<section>
@@ -264,10 +303,19 @@
 					<dd>The date that the payment was requested to be initiated, this may be today, tomorrow or in principle sometime in the future if the consumer wishes to defer payment.</dd>
 					<dt><dfn><code>PayerPaymentIdentification</code></dfn></dt>
 					<dd>The reference supplied by the Payer (End to End Identification in ISO20022 definition)</dd>
+					
+					<div class="issue" title="Field date type">
+					The above field needs changing to a date type
+					</div>
+									
 					<dt><dfn><code>PayerdentificationCode</code></dfn></dt>
 					<dd>The payer reference</dd>
 					<dt><dfn><code>BuyerIdentificationCode</code></dfn></dt>
 					<dd>The buyer reference. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
+
+					<div class="issue" title="Privacy issues?">
+					The above two fields return information about the payer and buyer, what privacy implications are there for this?
+					</div>
 				</dl>
 
 			</section>
