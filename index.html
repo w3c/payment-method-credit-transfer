@@ -198,8 +198,8 @@
 				<p>The <dfn><code>PushSCTRequest</code></dfn> dictionaries contains the following fields:</p>
 
 				<dl>
-					<dt><dfn><code>requiredFields</code></dfn></dt>
-					<dd>The <code>requiredFields</code> field contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument must fail as this is a push payment.</dd>
+					<dt><dfn><code>requiredResponseFields</code></dfn></dt>
+					<dd>Contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument must fail as this is a push payment.</dd>
 
 					<div class="issue" title="Sub-class modelling required?">
 					The above field is also required in the BasicCardRequest, does this need modelling in the a superclass or base api?
@@ -266,7 +266,8 @@
 					</div>
 					
 					<dt><dfn><code>notificationURL</code></dfn></dt>
-					<dd>The endpoint (a.k.a. webhook) that will be called by the payment app to update the merchant. This can be used to protect against various failure scenarios.</dd>			
+					<dd>The endpoint (a.k.a. webhook) that will be called by the payment app to update the merchant. This can be used to protect against various failure scenarios.</dd>
+					<dd>The <dfn><code>PushSCTResponse</dfn></code> will be posted to the notificationURL serialised as application/JSON</dd>
 
 					<div class="issue" title="Message authentication">
 					We need to investigate a means for message authentication on the above call-back. If this field is commonyl used, e.g. AliPay also, there is a case for specifying this in a superclass or other spec
