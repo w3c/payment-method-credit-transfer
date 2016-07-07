@@ -1,78 +1,44 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/PaymentFlows/skin.ipml
 
-Participant "Payee Website" as Payee
-participant "Payer's (Shopper's) Browser" as UA
+participant "Payee's Bank" as MPSP
+Participant "Payee" as Payee
 Actor "Payer" as Payer
-participant "Payment Mediator" as UAM
 participant "Payment App" as PSPUI
-participant "Payment Provider" as CPSP
+participant "Payer's Bank" as CPSP
 
 note over Payee, PSPUI: HTTPS
 
-title Generic Payment Request API Flow V1
+title Payer Initiated SEPA Credit Transfer
 
 == Negotiation of Payment Terms & Selection of Payment Instrument ==
 
-Payer<-[#green]>Payee: Establish Payment Obligation (including delivery)
-Payee->UA: Payment & delivery details
+Payee<->Payer: Offer Negotiation
 
-UA->UAM: PaymentRequest (Items, Amounts, Shipping Options )
-note right #aqua: PaymentRequest.Show() 
-opt
-	Payer<-[#green]>UAM: Select Shipping Options	
-	UAM->UA: Shipping Info
-	note right #aqua: shippingoptionchange or shippingaddresschange events
+== Payment Initiation ==
 
-	UA->UAM: Revised PaymentRequest
-end
+Payee->PSPUI: PaymentRequest with PullSCTRequest
 
-Payer<-[#green]>UAM: Select Payment App/Instrument
+PSPUI->CPSP: Authenticate
+PSPUI->CPSP: Submit Payment Initiation Request
 
-UAM<-[#green]>PSPUI: Invoke Payment App
+note over PSPUI: PAIN.001.003 request or equivalent (e.g. PSD2 / OpenBanking API if Payment App from 3rd Party)
+CPSP->PSPUI: Return Processing Date
 
-UAM->PSPUI: PaymentRequest (- Options)
+PSPUI->Payee: PullSCTResponse
 
-Payer<-[#green]>PSPUI: Authorise
-
-Group Method specific processing
-	PSPUI<->CPSP: interaction(s)
-		note left
-		(e.g. Authorise Payment
-		/ Tokenise Payment Instrument)
-		end note
-end
-
-PSPUI->UAM: Payment App Response
-
-
-UAM->UA: Payment App Response
-
-Note Right #aqua: Show() Promise Resolves 
+...
 
 == Payment Processing ==
 
-UA-\Payee: Payment App Response
-
-opt
-	Payee-\CPSP: Finalise Payment
-	CPSP-/Payee: Payment Response
-end
+CPSP->MPSP: Transfer Funds
 	
 == Notification ==
 
-UA->UAM: Payment Completetion Status
-
-note over UAM #aqua: response.complete(status)
-
-UAM->UA: UI Removed
-
-note over UAM #aqua: complete promise resolves
-
-UA->UA: Navigate to Result Page
+MPSP->Payee: Payment Completetion Status
 
 == Delivery of Product ==
 
-Payee->Payer: Meet any service obligation established in step 1
+Payee->Payer: Meet any service obligation established in Step 1
 
 @enduml
