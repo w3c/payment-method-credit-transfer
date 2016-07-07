@@ -22,7 +22,11 @@ Payee->PSPUI: PaymentRequest with PullSCTRequest
 PSPUI->CPSP: Authenticate
 PSPUI->CPSP: Submit Payment Initiation Request
 
+<<<<<<< HEAD
+note over PSPUI: PAIN.001 request or equivalent (e.g. PSD2 / OpenBanking API if Payment App from 3rd Party)
+=======
 note over PSPUI: PAIN.001.003 request or equivalent (e.g. PSD2 / OpenBanking API if Payment App from 3rd Party)
+>>>>>>> refs/remotes/w3c/gh-pages
 CPSP->PSPUI: Return Processing Date
 
 PSPUI->Payee: PullSCTResponse
