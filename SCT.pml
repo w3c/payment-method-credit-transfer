@@ -17,7 +17,7 @@ Payee<->Payer: Offer Negotiation
 
 == Payment Initiation ==
 
-Payee->PSPUI: PaymentRequest with PullSCTRequest
+Payee->PSPUI: PaymentRequest with PushSCTRequest
 
 PSPUI->CPSP: Authenticate
 PSPUI->CPSP: Submit Payment Initiation Request
@@ -26,7 +26,7 @@ note over PSPUI: PAIN.001 request or equivalent (e.g. PSD2 / OpenBanking API if 
 
 CPSP->PSPUI: Return Processing Date
 
-PSPUI->Payee: PullSCTResponse
+PSPUI->Payee: PushSCTResponse
 
 ...
 
