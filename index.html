@@ -175,20 +175,20 @@
 					dictionary PushSCTRequest {
 									sequence<DOMString> requiredFields;
 										
-						required	DOMString PayeeIBAN;
-									DOMString PayeeName;
-									DOMString PayeeIdentificationCode;
+						required	DOMString payeeIBAN;
+									DOMString payeeName;
+									DOMString payeeIdentificationCode;
 
-						required	DOMString PayeePaymentIdentification;
+						required	DOMString payeePaymentIdentification;
 						
-									DOMString SellerName;
-									DOMString SellerIdentificationCode;
+									DOMString sellerName;
+									DOMString sellerIdentificationCode;
 
-						required	DOMString PurposeCode;
-									DOMString CategoryPurposeCode;
+						required	DOMString purposeCode;
+									DOMString categoryPurposeCode;
 								 
-									DOMString PreferredProcessingDate;
-									DOMString NotificationURL;
+									DOMString preferredProcessingDate;
+									DOMString notificationURL;
 					};
 				 </pre>
 			</section>
@@ -209,24 +209,24 @@
 					The above field is required, but this can result in failed payments after 'Authorise' clicked. Should we have a better modelling (e.g. using subclasses) to allow for a more fine grained matching of apps to requests? Does the PMI specification need to support this?
 					</div>	
 					
-					<dt><dfn><code>PayeeIBAN</code></dfn></dt>
+					<dt><dfn><code>payeeIBAN</code></dfn></dt>
 					<dd>AT-20: The IBAN of the account of the Beneficiary</dd>
 					<dd>The International Bank Account Number used to uniquely identify the account of a customer at a financial institution</dd>
 					<dd>The ISO standard 13616 applies </dd>
 					
-					<dt><dfn><code>PayeeName</code></dfn></dt>
+					<dt><dfn><code>payeeName</code></dfn></dt>
 					<dd>AT-21 The name of the Beneficiary</dd>
 					<dd>The name of the Beneficiary as supplied by the Originator</dd>
 					
-					<dt><dfn><code>PayeeIdentificationCode</code></dfn></dt>
+					<dt><dfn><code>payeeIdentificationCode</code></dfn></dt>
 					<dd>AT-24: The Beneficiary identification code</dd>
 					<dd>A code supplied by the Originator</dd>
 										
-					<dt><dfn><code>PayeePaymentIdentification</code></dfn></dt>
+					<dt><dfn><code>payeePaymentIdentification</code></dfn></dt>
 					<dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction</dd>
 					<dd>A maximum of 140 characters for unstructured Remittance Information (see SEPA Rulebook for details for standard structure)</dd>
 
-					<dt><dfn><code>SellerName</code></dfn></dt>
+					<dt><dfn><code>sellerName</code></dfn></dt>
 					<dd>AT-28: The name of the Beneficiary Reference Party</dd>
 					<dd>The name of a person in relation to whom a Beneficiary receives a payment</dd>
 					<dd>The Beneficiary Reference Party is a person on behalf of or in connection with whom the Beneficiary
@@ -235,11 +235,11 @@
 					is a Beneficiary or otherwise a payee, or is contractually obliged or entitled in connection with any
 					payment obligation</dd>
 					
-					<dt><dfn><code>SellerIdentificationCode</code></dfn></dt>
+					<dt><dfn><code>sellerIdentificationCode</code></dfn></dt>
 					<dd>AT-29: The identification code of the Beneficiary Reference Party</dd>
 					<dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>						
 					
-					<dt><dfn><code>PurposeCode</code></dfn></dt>
+					<dt><dfn><code>purposeCode</code></dfn></dt>
 					<dd>AT-44: The purpose of the credit transfer</dd>
 					<dd>The purpose of the credit transfer is the underlying reason for the credit transfer transaction, i.e.
 					information on the nature of such transaction.</dd>
@@ -248,7 +248,7 @@
 					Purpose
 					</dd>
 
-					<dt><dfn><code>CategoryPurposeCode</code></dfn></dt>
+					<dt><dfn><code>categoryPurposeCode</code></dfn></dt>
 					<dd>AT-45: The category purpose of the credit transfer</dd>
 					<dd>The category purpose of the credit transfer is information on the high level nature of the credit transfer
 					transaction. It can have different goals: allow the Originator Bank to offer a specific processing agreed
@@ -258,14 +258,14 @@
 					CategoryPurpose
 					</dd>
 
-					<dt><dfn><code>PreferredProcessingDate</code></dfn></dt>
+					<dt><dfn><code>preferredProcessingDate</code></dfn></dt>
 					<dd>The merchants preferred processing date, see field SelectedProcessingDate in <dfn><code>PushSCTResponse</code></dfn></dd>
 
 					<div class="issue" title="Field date type">
 					The formatting of the date needs specifying
 					</div>
 					
-					<dt><dfn><code>NotificationURL</code></dfn></dt>
+					<dt><dfn><code>notificationURL</code></dfn></dt>
 					<dd>The endpoint (a.k.a. webhook) that will be called by the payment app to update the merchant. This can be used to protect against various failure scenarios.</dd>			
 
 					<div class="issue" title="Message authentication">
@@ -297,10 +297,10 @@
 		
 				<pre class="idl"> 
 					dictionary PushSCTResponse {
-						required	DOMString		SelectedProcessingDate;
-						required	DOMString		PayerPaymentIdentification;
-									DOMString		PayerIdentificationCode;
-									DOMString		BuyerIdentificationCode;
+						required	DOMString		selectedProcessingDate;
+						required	DOMString		payerPaymentIdentification;
+									DOMString		payerIdentificationCode;
+									DOMString		buyerIdentificationCode;
 					};
 				</pre>
 				
@@ -308,10 +308,10 @@
 	
 			<section>
 				<h2>Response Fields</h2>
-				<p>The <dfn><code>PushSCTResponse</code></dfn> dictionaries contains the following fields:</p>
+				<p>The <dfn><code>pushSCTResponse</code></dfn> dictionaries contains the following fields:</p>
 
 				<dl>
-					<dt><dfn><code>SelectedProcessingDate</code></dfn></dt>
+					<dt><dfn><code>selectedProcessingDate</code></dfn></dt>
 					<dd>This date may be different from that requested by the Payee, either because of a business rule (e.g non business day, or a preference from the payee to defer payment</dd>
 					<dd>AT-07: The Requested Execution Date of the instruction</dd>
 					<dd>This date corresponds with a date requested by an Originator for commencing the execution of the
@@ -321,7 +321,7 @@
 					The formatting of the date needs specifying
 					</div>
 					
-					<dt><dfn><code>PayerPaymentIdentification</code></dfn></dt>
+					<dt><dfn><code>payerPaymentIdentification</code></dfn></dt>
 					<dd>The reference supplied by the Payer (End to End Identification in ISO20022 definition)</dd>
 					<dd>AT-41: The Originator’s reference of the Credit Transfer Transaction</dd>
 					<dd>This reference identifies for a given Originator each Credit Transfer Transaction presented to the
@@ -332,11 +332,11 @@
 					Originator must define the internal structure of this reference; it can only be expected to be meaningful
 					to the Originator</dd>
 														
-					<dt><dfn><code>PayerIdentificationCode</code></dfn></dt>
+					<dt><dfn><code>payerIdentificationCode</code></dfn></dt>
 					<dd>AT-10: The Originator identification code</dd>
 					<dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>
 					
-					<dt><dfn><code>BuyerIdentificationCode</code></dfn></dt>
+					<dt><dfn><code>buyerIdentificationCode</code></dfn></dt>
 					<dd>The buyer reference. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
 					<dd>AT-09: The identification code of the Originator Reference Party</dd>
 					<dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>
