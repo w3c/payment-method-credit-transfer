@@ -124,7 +124,7 @@
       <section>		
 	<h2>CreditTransferRequest</h2>
 
-	<div class="note">The current fields are based upon the Customer to Bank Credit Transfer Initiation (DS-01) specification from <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. However the field names are amended to follow with roles defined in the W3C WebPayment specification. Mappings are provided in the field descriptions and are prefixed AT-xx. The Editors are also considering moving in the direction of terms used in the <a href="https://www.swift.com/standards/market-practice/common-global-implementation">Common Global Implementation (CGI)</a>.</div>
+	<div class="note">The current fields are drawn from the Customer to Bank Credit Transfer Initiation (DS-01) specification from <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. However the field names are amended in this specification to better align with W3C protocols. Mappings are provided in the field descriptions and are prefixed "AT-xx". Please note implementation restrictions (e.g., number of characters) in the SEPA Rulebook that are not indicated below. The Editors are also considering moving in the direction of terms used in the <a href="https://www.swift.com/standards/market-practice/common-global-implementation">Common Global Implementation (CGI)</a>.</div>
 
 	<pre class="idl">
 	  dictionary CreditTransferRequest {
@@ -133,9 +133,12 @@
 	    
           required DOMString payeeIBAN;
 	  DOMString payeeName;
+	  DOMString payeeBIC;
 	  DOMString payeeIdentificationCode;
-	    
-	  required DOMString payeePaymentIdentification;
+
+	  required DOMString payeePaymentIdentificationHumanReadable;
+          required DOMString payeePaymentIdentificationMachineReadable;
+
 	  DOMString sellerName;
 	  DOMString sellerIdentificationCode;
 	    
@@ -151,88 +154,78 @@
 	
 	<dl>
 	  <dt><dfn><code>requiredResponseFields</code></dfn></dt>
-	  <dd>Contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g. the payment instrument must fail as this is a push payment.
-	  
-	  <div class="issue" title="Sub-class modelling required?">
-	    The above field is also required in the BasicCardRequest, does this need modelling in the a superclass or base api?
-	  </div>	
-	  
-	  <div class="issue" title="Failed payment edge cases?">
-	    The above field is required, but this can result in failed payments after 'Authorise' clicked. Should we have a better modelling (e.g. using subclasses) to allow for a more fine grained matching of apps to requests? Does the PMI specification need to support this?
+	  <dd>Contains the list of fields that the Payment App must attempt to return, if this requirements cannot be met, e.g., the payment instrument must fail as this is a push payment.
+	  	  <div class="issue" title="Failed payment edge cases?">
+	    The above field is required, but this can result in failed payments after 'Authorise' clicked. Should we have a better modelling (e.g. using subclasses) to allow for a more fine-grained matching of apps to requests? Does the PMI specification need to support this?
 	  </div>
 	  </dd>
+
 	  <dt><dfn><code>supportedCountries</code><dfn></dt>
-	  <dd>The supportedNetworks field contains a sequence of [[!ISO3166-2]] identifiers of countries from which the merchant accepts credit transfers. This value is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
+	  <dd>The supportedCountries field contains a sequence of [[!ISO3166-2]] identifiers of countries from which the merchant accepts credit transfers. This value is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
 	  </dd>
+
 	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
-	  <dd>AT-20: The IBAN of the account of the Beneficiary</dd>
-	  <dd>The International Bank Account Number used to uniquely identify the account of a customer at a financial institution.</dd>
-	  
+	  <dd>This field indicates the account number of the payee (the merchant) that will be used for the credit transfer. This will typically be an IBAN number, or a domestic account number for those countries that do not use IBAN.</dd>
+	  <dd>AT-20: The IBAN of the account of the Beneficiary.</dd>
+
+	  <dt><dfn><code>payeeBIC</code></dfn></dt>
+	  <dd>The Bank code of the payee that should be used along the “payeeIBAN” in order to send the Credit Transfer.</dd>
+	  <dd>AT-23: the BIC code of the beneficiary.</dd>
+	  <dd>Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the BIC of his account.
+This field could be also used with another format of “bank identification code” for countries not using BIC.</dd>
+
 	  <dt><dfn><code>payeeName</code></dfn></dt>
-	  <dd>AT-21 The name of the Beneficiary</dd>
-	  <dd>The name of the Beneficiary as supplied by the Originator</dd>
-	  
+	  <dd>The name of the payee known to the bank that holds the account describe by “payeeIBAN”.</dd>
+	  <dd>AT-21: The name of the Beneficiary</dd>
+
 	  <dt><dfn><code>payeeIdentificationCode</code></dfn></dt>
+	  <dd>An identification code provided by the payee.</dd>
 	  <dd>AT-24: The Beneficiary identification code</dd>
-	  <dd>A code supplied by the Originator</dd>
-	  
-	  <dt><dfn><code>payeePaymentIdentification</code></dfn></dt>
-	  <dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction</dd>
-	  <dd>A maximum of 140 characters for unstructured Remittance Information (see SEPA Rulebook for details for standard structure)</dd>
-	  
+
+	  <dt><dfn><code>payeePaymentIdentificationHumanReadable</code></dfn></dt>
+	  <dd>Human-readable remittance information explaining to the payer what is being paid for.</dd>
+	  <dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction only if the payeePaymentIdentificationMachineReadable is not provided.</dd>
+
+	  <dt><dfn><code>payeePaymentIdentificationMachineReadable</code></dfn></dt>
+	  <dd>Remittance information used for automatic matching upon receipt of the credit transfer.</dd>
+	  <dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction.</dd>
+
 	  <dt><dfn><code>sellerName</code></dfn></dt>
+	  <dd>The name of a person or company in relation to whom a Beneficiary receives a payment.</dd>
 	  <dd>AT-28: The name of the Beneficiary Reference Party</dd>
-	  <dd>The name of a person in relation to whom a Beneficiary receives a payment</dd>
-	  <dd>The Beneficiary Reference Party is a person on behalf of or in connection with whom the Beneficiary
-	    receives a payment.</dd>
-	  <dd>Reference in any payment instruction to a Beneficiary Reference Party does not imply that such party
-	    is a Beneficiary or otherwise a payee, or is contractually obliged or entitled in connection with any
-	    payment obligation</dd>
+
 	  
 	  <dt><dfn><code>sellerIdentificationCode</code></dfn></dt>
+	  <dd>A code related to “sellerName”.</dd>
 	  <dd>AT-29: The identification code of the Beneficiary Reference Party</dd>
-	  <dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>						
 	  
 	  <dt><dfn><code>purposeCode</code></dfn></dt>
+	  <dd>The purpose of the credit transfer is the underlying reason for the credit transfer transaction, i.e. information on the nature of such transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.</dd> 
 	  <dd>AT-44: The purpose of the credit transfer</dd>
-	  <dd>The purpose of the credit transfer is the underlying reason for the credit transfer transaction, i.e.
-	    information on the nature of such transaction.</dd>
-	  <dd>All codes part of the ISO standard are accepted
-	    <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>
-	    Purpose
-	  </dd>
+	  <dd>The category purpose of the credit transfer is information on the high level nature of the credit transfer transaction. 
 	  
 	  <dt><dfn><code>categoryPurposeCode</code></dfn></dt>
+	  <dd>The category purpose of the credit transfer is information on the high level nature of transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.</dd>
 	  <dd>AT-45: The category purpose of the credit transfer</dd>
-	  <dd>The category purpose of the credit transfer is information on the high level nature of the credit transfer
-	    transaction. It can have different goals: allow the Originator Bank to offer a specific processing agreed
-	    with the Originator, or allow the Beneficiary Bank to apply a specific processing
-	  <dd>All codes part of the ISO standard are accepted from
-	    <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>, defaults to EPAY (ePayment) if excluded
-	    CategoryPurpose
-	  </dd>
 	  
 	  <dt><dfn><code>preferredProcessingDate</code></dfn></dt>
-	  <dd>The merchants preferred processing date, see field SelectedProcessingDate in <dfn><code>CreditTransferResponse</code></dfn></dd>
-	  
+	  <dd>The merchant's preferred processing date. See also: SelectedProcessingDate in the CreditTransferResponse.</dd>
+	  <dd>
 	  <div class="issue" title="Field date type">
-	    The formatting of the date needs specifying
+	    Date format?
 	  </div>
-	  
+	  </dd>
 	  <dt><dfn><code>notificationURL</code></dfn></dt>
-	  <dd>The endpoint (a.k.a. webhook) that will be called by the payment app to update the merchant. This can be used to protect against various failure scenarios.</dd>
-	  <dd>The <dfn><code>CreditTransferResponse</dfn></code> will be posted to the notificationURL serialised as application/JSON</dd>
-	  
+	  <dd>An end point for payment status updates. This specification does not define how such endpoints will work.</dd>
+	  <dd>
 	  <div class="issue" title="Message authentication">
-	    We need to investigate a means for message authentication on the above call-back. If this field is commonyl used, e.g. AliPay also, there is a case for specifying this in a superclass or other spec
+	    The Web Payments Working Group is also discussing out-of-browser payment messages.
 	  </div>
-	  
-	  <div class="issue" title="Field lengths">
-	    Are there any further maximum field lengths that need specifying?
-	  </div>
-	  
+	  </dd>
 	</dl>
-	
+
+	<div class="issue"><p>We need to address an important security issue: how to ensure that fields are not tampered with (e.g., malicious changes to the beneficiary)?. Similarly, it is important that the payeeName not be changed by the payer or the payment app in order to be sure that automatic controls at the payee’s bank will work.</p>
+	</div>
       </section>
     </section>
     
@@ -245,7 +238,7 @@
       <section>
 	
 	<h2>CreditTransferResponse</h2>
-	<p>The <dfn><code>CreditTransferResponse</dfn></code> message means that a message has been submitted to the Payee's Bank, not that funds transfer has occured. The merchant should wait for notification from its Bank that the payment has cleared.</p>
+	<p>The <dfn><code>CreditTransferResponse</dfn></code> message means that a message has been submitted to the Payee's Bank, not that funds transfer has occurred. The merchant should wait for notification from its Bank that the payment has cleared.</p>
 	
 	<pre class="idl"> 
 	  dictionary CreditTransferResponse {
@@ -260,29 +253,22 @@
 	
 	<dl>
 	  <dt><dfn><code>selectedProcessingDate</code></dfn></dt>
-	  <dd>This date may be different from that requested by the Payee, either because of a business rule (e.g., non business day, or a preference from the payee to defer payment</dd>
+	  <dd>The date for commencing the execution of the payment request. This date may be different from that requested by the Payee, either because of a business rule (e.g., non business day, or a preference from the payee to defer payment</dd>
 	  <dd>AT-07: The Requested Execution Date of the instruction</dd>
-	  <dd>This date corresponds with a date requested by an Originator for commencing the execution of the
-	    Credit Transfer Instruction as described in section 4.2.1.</dd>
-	  
-	  <div class="issue" title="Field date type">
-	    The formatting of the date needs specifying
-	  </div>
-	  
+
 	  <dt><dfn><code>payerPaymentIdentification</code></dfn></dt>
-	  <dd>The reference supplied by the Payer (End to End Identification in ISO20022 definition)</dd>
-	  <dd>AT-41: The Originator’s reference of the Credit Transfer Transaction</dd>
-	  <dd>This reference identifies for a given Originator each Credit Transfer Transaction presented to the
-	    Originator Bank, in a unique way. This number will be transmitted in the entire process of the handling
+	  <dd>A unique identifier for a given payer each Credit Transfer Transaction presented to the
+	    payer Bank. This number will be transmitted in the entire process of the handling
 	    of the credit transfer transactions from acceptance until the finality of the transaction. It must be
-	    returned in any exception handling process-step by any party involved. The Originator cannot request
+	    returned in any exception handling process-step by any party involved. The payer cannot request
 	    for any other referencing information to be returned to him, in order to identify a credit transfer. The
-	    Originator must define the internal structure of this reference; it can only be expected to be meaningful
-	    to the Originator</dd>
+	    payer must define the internal structure of this reference; it can only be expected to be meaningful
+	    to the payer.</dd>
+	  <dd>AT-41: The Originator’s reference of the Credit Transfer Transaction (End to End Identification in ISO20022 definition)</dd>
 	  
 	  <dt><dfn><code>payerIdentificationCode</code></dfn></dt>
+	  <dd>A code supplied by the payer.</dd>
 	  <dd>AT-10: The Originator identification code</dd>
-	  <dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>
 	  
 	  <dt><dfn><code>buyerIdentificationCode</code></dfn></dt>
 	  <dd>The buyer reference. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
