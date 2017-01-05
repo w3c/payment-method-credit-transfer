@@ -17,23 +17,32 @@ Payee<->Payer: Offer Negotiation
 
 == Payment Initiation ==
 
-Payee->PSPUI: PaymentRequest with PushSCTRequest
+Payee->PSPUI: PaymentRequest with CreditTransferRequest
 
-PSPUI->CPSP: Authenticate
 PSPUI->CPSP: Submit Payment Initiation Request
 
-note over PSPUI: PAIN.001 request or equivalent (e.g. PSD2 / OpenBanking API if Payment App from 3rd Party)
+note over PSPUI
+API to receive credit transfer initiation including all data set from CreditTransferRequest
+(e.g. PSD2 / OpenBanking API if Payment App from 3rd Party)
+end note
+
+PSPUI->CPSP: Authenticate
 
 CPSP->PSPUI: Return Processing Date
 
-PSPUI->Payee: PushSCTResponse
+PSPUI->Payee: CreditTransferResponse
 
 ...
 
 == Payment Processing ==
 
 CPSP->MPSP: Transfer Funds
-	
+note over PSPUI
+if payeePaymentIdentificationUserReadable  and payeePaymentIdentificationMachineReadable
+available in CreditTransferRequest then payeePaymentIdentificationMachineReadable should
+be privilegied into the SEPA Credit Transfer
+end note
+
 == Notification ==
 
 MPSP->Payee: Payment Completetion Status
@@ -41,5 +50,13 @@ MPSP->Payee: Payment Completetion Status
 == Delivery of Product ==
 
 Payee->Payer: Meet any service obligation established in Step 1
+
+== Bank legacy Notification  == 
+CPSP->Payer: Statement or Credit transfer advice
+ note over PSPUI
+ both  payeePaymentIdentificationUserReadable  and payeePaymentIdentificationMachineReadable
+ could be provided in CAMT-053 and CAMT-054 formats
+ end note
+
 
 @enduml
