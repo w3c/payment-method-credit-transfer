@@ -57,9 +57,9 @@
                   ]
               ,   status:   "CR"
               },
-              "ISO3166-2": {
-                  title:    "ISO 3166-2"
-              ,   href:     "http://www.iso.org/iso/home/standards/country_codes.htm"
+              "CLDR": {
+                  title:    "Unicode Common Locale Data Repository"
+              ,   href:     "http://cldr.unicode.org/"
               }
           }
       };
@@ -107,8 +107,8 @@
         [[!METHODIDENTIFIERS]].</dd>
         <dt>Web IDL</dt>
         <dd>The IDL in this specification is defined by Web IDL [[!WEBIDL]].</dd>
-	<dt>ISO 3611</dt>
-	<dd>Country codes defined in [[!ISO3166-2]] are used by merchants as a filter for indicating the countries from which they accept credit transfers.</dd>
+	<dt>CLDR</dt>
+	<dd>Country codes used in this specification are only used for filtering; country information is not part of the payment message. We thus align with the choice of Payment Request API, which is to use [[!CLDR]].</dd>
       </dl>
     </section>
 
@@ -166,7 +166,7 @@
 	  </dd>
 
 	  <dt><dfn><code>supportedCountries</code><dfn></dt>
-	  <dd>The supportedCountries field contains a sequence of [[!ISO3166-2]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
+	  <dd>The supportedCountries field contains a sequence of [[!CLDR]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
 	  </dd>
 
 	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
