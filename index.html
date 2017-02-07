@@ -129,6 +129,7 @@
 	<pre class="idl">
 	  dictionary CreditTransferRequest {
 	  sequence&lt;DOMString&gt; requiredResponseFields;
+	  sequence&lt;DOMString&gt; supportedNetworks;
 	  sequence&lt;DOMString&gt; supportedCountries;
 	    
           required DOMString payeeIBAN;
@@ -160,8 +161,12 @@
 	  </div>
 	  </dd>
 
+	  <dt><dfn><code>supportedNetworks</code><dfn></dt>
+	  <dd>The supportedNetworks field contains a sequence of identifiers for credit transfer networks that the merchant accepts. This field is optional. If a value is not provided then the merchant accepts credit transfers from any credit transfer network.
+	  </dd>
+
 	  <dt><dfn><code>supportedCountries</code><dfn></dt>
-	  <dd>The supportedCountries field contains a sequence of [[!ISO3166-2]] identifiers of countries from which the merchant accepts credit transfers. This value is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
+	  <dd>The supportedCountries field contains a sequence of [[!ISO3166-2]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
 	  </dd>
 
 	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
