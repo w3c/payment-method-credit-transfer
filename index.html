@@ -255,8 +255,12 @@ This field could be also used with another format of “bank identification code
 	  dictionary CreditTransferResponse {
 	  required	DOMString selectedProcessingDate;
 	  required	DOMString payerPaymentIdentification;
-	  DOMString     payerIdentificationCode;
+	  required	DOMString payerBIC;
+	  required	DOMString selectedNetwork;
+	  DOMString  	payerIdentificationCode;
+	  DOMString     payerName;
 	  DOMString     buyerIdentificationCode;
+	  DOMString     buyerName;
 	  };
 	</pre>
 	
@@ -277,17 +281,33 @@ This field could be also used with another format of “bank identification code
 	    to the payer.</dd>
 	  <dd>AT-41: The Originator’s reference of the Credit Transfer Transaction (End to End Identification in ISO20022 definition)</dd>
 	  
+	  <dt><dfn><code>payerBIC</code></dfn></dt>
+	  <dd>The BIC code of the bank which send the Credit Transfer</dd>
+	  <dd>AT-06: The BIC of the Originator </dd>
+		
+	  <dt><dfn><code>selectedNetwork</code></dfn></dt>
+	  <dd>The network used by the originator to send the credit transfer</dd>
+	  <dd>AT-40:  Identification code of the Scheme </dd>
+		
 	  <dt><dfn><code>payerIdentificationCode</code></dfn></dt>
 	  <dd>A code supplied by the payer.</dd>
 	  <dd>AT-10: The Originator identification code</dd>
-	  
+		
+	  <dt><dfn><code>payerName</code></dfn></dt>
+	  <dd>The nameof the payer.</dd>
+	  <dd>AT-02: The Name of the  Originator</dd>
+		
 	  <dt><dfn><code>buyerIdentificationCode</code></dfn></dt>
 	  <dd>The buyer reference. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
 	  <dd>AT-09: The identification code of the Originator Reference Party</dd>
 	  <dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>
 	  
+	  <dt><dfn><code>buyerName</code></dfn></dt>
+	  <dd>The buyer name. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
+	  <dd>AT-08: Name of the Originator Reference Party of the Originator Reference Party</dd>	
+		
 	  <div class="issue" title="Privacy issues?">
-	    The above two fields return information about the payer and buyer, are there any privacy implications for these?
+	    The above four fields return information about the payer and buyer, are there any privacy implications for these?
 	  </div>
 	</dl>
 	
