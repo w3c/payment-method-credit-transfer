@@ -134,6 +134,7 @@
 	    
           required DOMString payeeIBAN;
 	  DOMString payeeName;
+	  DOMString payeeAddress;
 	  required DOMString payeeBIC;
 	  DOMString payeeIdentificationCode;
 
@@ -163,7 +164,8 @@
 
 	  <dt><dfn><code>supportedNetworks</code><dfn></dt>
 	  <dd>The supportedNetworks field contains a sequence of identifiers for credit transfer networks that the merchant accepts. This field is optional. If a value is not provided then the merchant accepts credit transfers from any credit transfer network.
-	  </dd>
+	  <dd> AT-40: Identification code of the Scheme
+	   </dd>
 
 	  <dt><dfn><code>supportedCountries</code><dfn></dt>
 	  <dd>The supportedCountries field contains a sequence of [[!CLDR]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
@@ -182,6 +184,10 @@ This field could be also used with another format of “bank identification code
 	  <dt><dfn><code>payeeName</code></dfn></dt>
 	  <dd>The name of the payee known to the bank that holds the account describe by “payeeIBAN”.</dd>
 	  <dd>AT-21: The name of the Beneficiary</dd>
+		  
+	  <dt><dfn><code>payeeAddress</code></dfn></dt>
+	  <dd>The address of the payee known by the bank that holds the account describe by “payeeIBAN”.</dd>
+	  <dd>AT-22: The address of the Beneficiary</dd>
 
 	  <dt><dfn><code>payeeIdentificationCode</code></dfn></dt>
 	  <dd>An identification code provided by the payee.</dd>
