@@ -75,8 +75,7 @@
   </head>
   <body>
     <section id='abstract'>
-      <p> This specification is a Payment Method specification for use with the PaymentRequest API [PAYMENT-REQUEST-API]. With it, merchants and payers can exchange information required for credit transfers across a variety of payment systems.
-      </p>
+      <p> This specification is a Payment Method specification for use with the PaymentRequest API [PAYMENT-REQUEST-API]. With it, merchants and payers can exchange information required for credit transfers across a variety of payment systems.</p>
     </section>
 
     <section id='sotd'>
@@ -124,8 +123,6 @@
       <section>		
 	<h2>CreditTransferRequest</h2>
 
-	<div class="note">The current fields are drawn from the Customer to Bank Credit Transfer Initiation (DS-01) specification from <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. However the field names are amended in this specification to better align with W3C protocols. Mappings are provided in the field descriptions and are prefixed "AT-xx". Please note implementation restrictions (e.g., number of characters) in the SEPA Rulebook that are not indicated below. The Editors are also considering moving in the direction of terms used in the <a href="https://www.swift.com/standards/market-practice/common-global-implementation">Common Global Implementation (CGI)</a>.</div>
-
 	<pre class="idl">
 	  dictionary CreditTransferRequest {
 	  sequence&lt;DOMString&gt; requiredResponseFields;
@@ -163,9 +160,8 @@
 	  </dd>
 
 	  <dt><dfn><code>supportedNetworks</code><dfn></dt>
-	  <dd>The supportedNetworks field contains a sequence of identifiers for credit transfer networks that the merchant accepts. This field is optional. If a value is not provided then the merchant accepts credit transfers from any credit transfer network.
-	  <dd> AT-40: Identification code of the Scheme
-	   </dd>
+	  <dd>The supportedNetworks field contains a sequence of identifiers for credit transfer networks that the merchant accepts. This field is optional. If a value is not provided then the merchant accepts credit transfers from any credit transfer network. <span class="note">Note: The Web Payments Working Group is still discussing whether and how to maintain a database of supported network identifiers.</span>
+	  </dd>
 
 	  <dt><dfn><code>supportedCountries</code><dfn></dt>
 	  <dd>The supportedCountries field contains a sequence of [[!CLDR]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
@@ -173,51 +169,37 @@
 
 	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
 	  <dd>This field indicates the account number of the payee (the merchant) that will be used for the credit transfer. This will typically be an IBAN number, or a domestic account number for those countries that do not use IBAN.</dd>
-	  <dd>AT-20: The IBAN of the account of the Beneficiary.</dd>
 
 	  <dt><dfn><code>payeeBIC</code></dfn></dt>
 	  <dd>The Bank code of the payee that should be used along the “payeeIBAN” in order to send the Credit Transfer.</dd>
-	  <dd>AT-23: the BIC code of the beneficiary.</dd>
-	  <dd>Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the BIC of his account.
-This field could be also used with another format of “bank identification code” for countries not using BIC.</dd>
 
 	  <dt><dfn><code>payeeName</code></dfn></dt>
 	  <dd>The name of the payee known to the bank that holds the account describe by “payeeIBAN”.</dd>
-	  <dd>AT-21: The name of the Beneficiary</dd>
 		  
 	  <dt><dfn><code>payeeAddress</code></dfn></dt>
 	  <dd>The address of the payee known by the bank that holds the account describe by “payeeIBAN”.</dd>
-	  <dd>AT-22: The address of the Beneficiary</dd>
 
 	  <dt><dfn><code>payeeIdentificationCode</code></dfn></dt>
 	  <dd>An identification code provided by the payee.</dd>
-	  <dd>AT-24: The Beneficiary identification code</dd>
 
 	  <dt><dfn><code>payeePaymentIdentificationHumanReadable</code></dfn></dt>
 	  <dd>Human-readable remittance information explaining to the payer what is being paid for.</dd>
-	  <dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction only if the payeePaymentIdentificationMachineReadable is not provided.</dd>
 
 	  <dt><dfn><code>payeePaymentIdentificationMachineReadable</code></dfn></dt>
 	  <dd>Remittance information used for automatic matching upon receipt of the credit transfer.</dd>
-	  <dd>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction.</dd>
 
 	  <dt><dfn><code>sellerName</code></dfn></dt>
 	  <dd>The name of a person or company in relation to whom a Beneficiary receives a payment.</dd>
-	  <dd>AT-28: The name of the Beneficiary Reference Party</dd>
 
 	  
 	  <dt><dfn><code>sellerIdentificationCode</code></dfn></dt>
 	  <dd>A code related to “sellerName”.</dd>
-	  <dd>AT-29: The identification code of the Beneficiary Reference Party</dd>
 	  
 	  <dt><dfn><code>purposeCode</code></dfn></dt>
 	  <dd>The purpose of the credit transfer is the underlying reason for the credit transfer transaction, i.e. information on the nature of such transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.</dd> 
-	  <dd>AT-44: The purpose of the credit transfer</dd>
-	  <dd>The category purpose of the credit transfer is information on the high level nature of the credit transfer transaction. 
 	  
 	  <dt><dfn><code>categoryPurposeCode</code></dfn></dt>
 	  <dd>The category purpose of the credit transfer is information on the high level nature of transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.</dd>
-	  <dd>AT-45: The category purpose of the credit transfer</dd>
 	  
 	  <dt><dfn><code>preferredProcessingDate</code></dfn></dt>
 	  <dd>The merchant's preferred processing date. See also: SelectedProcessingDate in the CreditTransferResponse.</dd>
@@ -229,13 +211,10 @@ This field could be also used with another format of “bank identification code
 	  <dt><dfn><code>notificationURL</code></dfn></dt>
 	  <dd>An end point for payment status updates. This specification does not define how such endpoints will work.</dd>
 	  <dd>
-	  <div class="issue" title="Message authentication">
-	    The Web Payments Working Group is also discussing out-of-browser payment messages.
-	  </div>
 	  </dd>
 	</dl>
 
-	<div class="issue"><p>We need to address an important security issue: how to ensure that fields are not tampered with (e.g., malicious changes to the beneficiary)?. Similarly, it is important that the payeeName not be changed by the payer or the payment app in order to be sure that automatic controls at the payee’s bank will work.</p>
+	<div class="issue"><p>How do we ensure that fields are not tampered with (e.g., malicious changes to the beneficiary)?. Similarly, it is important that the payeeName not be changed by the payer or the payment app in order to be sure that automatic controls at the payee’s bank will work.</p>
 	</div>
       </section>
     </section>
@@ -269,7 +248,6 @@ This field could be also used with another format of “bank identification code
 	<dl>
 	  <dt><dfn><code>selectedProcessingDate</code></dfn></dt>
 	  <dd>The date for commencing the execution of the payment request. This date may be different from that requested by the Payee, either because of a business rule (e.g., non business day, or a preference from the payee to defer payment</dd>
-	  <dd>AT-07: The Requested Execution Date of the instruction</dd>
 
 	  <dt><dfn><code>payerPaymentIdentification</code></dfn></dt>
 	  <dd>A unique identifier for a given payer each Credit Transfer Transaction presented to the
@@ -279,32 +257,24 @@ This field could be also used with another format of “bank identification code
 	    for any other referencing information to be returned to him, in order to identify a credit transfer. The
 	    payer must define the internal structure of this reference; it can only be expected to be meaningful
 	    to the payer.</dd>
-	  <dd>AT-41: The Originator’s reference of the Credit Transfer Transaction (End to End Identification in ISO20022 definition)</dd>
 	  
 	  <dt><dfn><code>payerBIC</code></dfn></dt>
 	  <dd>The BIC code of the bank which send the Credit Transfer</dd>
-	  <dd>AT-06: The BIC of the Originator </dd>
 		
 	  <dt><dfn><code>selectedNetwork</code></dfn></dt>
 	  <dd>The network used by the originator to send the credit transfer</dd>
-	  <dd>AT-40:  Identification code of the Scheme </dd>
-		
+
 	  <dt><dfn><code>payerIdentificationCode</code></dfn></dt>
 	  <dd>A code supplied by the payer.</dd>
-	  <dd>AT-10: The Originator identification code</dd>
 		
 	  <dt><dfn><code>payerName</code></dfn></dt>
 	  <dd>The name  of the payer.</dd>
-	  <dd>AT-02: The Name of the  Originator</dd>
 		
 	  <dt><dfn><code>buyerIdentificationCode</code></dfn></dt>
-	  <dd>The buyer reference. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
-	  <dd>AT-09: The identification code of the Originator Reference Party</dd>
-	  <dd>A code supplied by the Originator and to be delivered unaltered to the Beneficiary</dd>
-	  
+	  <dd>The buyer reference. The buyer may be a 3rd party to the payer, if the payer is paying on behalf of another party.</dd>
+
 	  <dt><dfn><code>buyerName</code></dfn></dt>
 	  <dd>The buyer name. The buyer may be a 3rd party to the payer. If the payer is paying on behalf of another party.</dd>
-	  <dd>AT-08: Name of the Originator Reference Party of the Originator Reference Party</dd>	
 		
 	  <div class="issue" title="Privacy issues?">
 	    The above four fields return information about the payer and buyer, are there any privacy implications for these?
@@ -313,6 +283,108 @@ This field could be also used with another format of “bank identification code
 	
       </section>
     </section>
+
+    <section id="mappings">
+      <h2>Appendix: Mappings</h2>
+      <p>This table maps field names used in this specification
+	to relevant fields in other schemes or standards.</p>
+
+      <section>
+	<h3>CreditTransferRequest Fields</h3>
+
+	<table border="1">
+	  <tr>
+	    <th></th><th><a href="#map-sepa">SEPA</a></th>
+	  </tr>
+	  <tr>
+	    <th>supportedNetworks</th><td>AT-40: Identification code of the Scheme</td>
+	  </tr>
+	  <tr>
+	    <th>payeeIBAN</th><td>AT-20: The IBAN of the account of the Beneficiary.</td>
+	  </tr>
+	  <tr>
+	    <th>payeeBIC</th><td>AT-23: the BIC code of the beneficiary. Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the BIC of his account.
+This field could be also used with another format of “bank identification code” for countries not using BIC.</td>
+	  </tr>
+	  <tr>
+	    <th>payeeName</th><td>AT-21: The name of the Beneficiary</td>
+	  </tr>
+	  <tr>
+	    <th>payeeAddress</th><td>AT-22: The address of the Beneficiary</td>
+	  </tr>
+	  <tr>
+	    <th>payeeIdentificationCode</th><td>AT-24: The Beneficiary identification code</td>
+	  </tr>
+	  <tr>
+	    <th>payeePaymentIdentificationHumanReadable</th><td>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction only if the payeePaymentIdentificationMachineReadable is not provided.</td>
+	  </tr>
+	  <tr>
+	    <th>payeePaymentIdentificationMachineReadable</th><td>AT-05: The Remittance Information sent by the Originator to the Beneficiary in the Credit Transfer Instruction.</td>
+	  </tr>
+	  <tr>
+	    <th>sellerName</th><td>AT-28: The name of the Beneficiary Reference Party</td>
+	  </tr>
+	  <tr>
+	    <th>sellerIdentificationCode</th><td>AT-29: The identification code of the Beneficiary Reference Party</td>
+	  </tr>
+	  <tr>
+	    <th>purposeCode</th><td>AT-44: The purpose of the credit transfer</td>
+	  </tr>
+	  <tr>
+	    <th>categoryPurposeCode</th><td>AT-45: The category purpose of the credit transfer</td>
+	  </tr>
+	  <tr>
+	    <th>preferredProcessingDate</th><td>...</td>
+	  </tr>
+	  <tr>
+	    <th>notificationURL</th><td>...</td>
+	  </tr>
+	</table>
+      </section>
+      
+      <section>
+	<h3>CreditTransferRequest Fields</h3>
+
+		<table border="1">
+	  <tr>
+	    <th></th><th><a href="#map-sepa">SEPA</a></th>
+	  </tr>
+	  <tr>
+	    <th>selectedProcessingDate</th><td>AT-07: The Requested Execution Date of the instruction</td>
+	  </tr>
+	  <tr>
+	    <th>payerPaymentIdentification</th><td>AT-41: The Originator’s reference of the Credit Transfer Transaction (End to End Identification in ISO20022 definition)</td>
+	  </tr>
+	  <tr>
+	    <th>payerBIC</th><td>AT-06: The BIC of the Originator </td>
+	  </tr>
+	  <tr>
+	    <th>selectedNetwork</th><td>AT-40:  Identification code of the Scheme </td>
+	  </tr>
+	  <tr>
+	    <th>payerIdentificationCode</th><td>AT-10: The Originator identification code</td>
+	  </tr>
+	  <tr>
+	    <th>payerName</th><td>AT-02: The Name of the  Originator</td>
+	  </tr>
+	  <tr>
+	    <th>buyerIdentificationCode</th><td>AT-09: The identification code of the Originator Reference Party</td>
+	  </tr>
+	  <tr>
+	    <th>buyerName</th><td>AT-08: Name of the Originator Reference Party of the Originator Reference Party</td>
+	  </tr>
+	</table>
+      
+      </section>
+
+      <section>
+	<h3>Sources</h3>>
+	<ul>
+	  <li id="map-sepa">Customer to Bank Credit Transfer Initiation (DS-01) specification from <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook may impose additional implementation restrictions (e.g., number of characters) not defined in the current specification.</li>
+	</ul>
+      </section>
+    </section>
+
 
     <section id="design-considerations">
       <h2>Appendix: Design Considerations</h2>
@@ -324,6 +396,7 @@ This field could be also used with another format of “bank identification code
 	  nor definitive.</li>
 	<li>When faced with a design choice, prefer the option that
 	  favors low-value payments over high-value payments.</li>
+	<li>Payment apps are responsible for payer authentication. They may delgate this responsibility to issuing banks or third-party providers.</li>
       </ul>
     </section>
 
