@@ -143,6 +143,7 @@
 	    
 	  required DOMString purposeCode;
 	  DOMString categoryPurposeCode;
+	  DOMString chargeBearer;
 	    
 	  DOMString preferredProcessingDate;
 	  DOMString notificationURL;
@@ -201,6 +202,12 @@
 	  <dt><dfn><code>categoryPurposeCode</code></dfn></dt>
 	  <dd>The category purpose of the credit transfer is information on the high level nature of transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.</dd>
 	  
+ 	 <dt><dfn><code>cgargeBearer</code></dfn></dt>
+	  <dd>The chargeBearer indicate how the chazrge of the credit transfer will be split between the payee and the payer in the following list : OUR (the user will pay), SHARED (the fees are split), BENE (the apyee will pay)</dd>
+	  
+	  
+	  		  
+		  
 	  <dt><dfn><code>preferredProcessingDate</code></dfn></dt>
 	  <dd>The merchant's preferred processing date. See also: SelectedProcessingDate in the CreditTransferResponse.</dd>
 	  <dd>
