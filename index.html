@@ -247,6 +247,7 @@
 	  DOMString     payerName;
 	  DOMString     buyerIdentificationCode;
 	  DOMString     buyerName;
+	  DOMString     authorizationToken;
 	  };
 	</pre>
 	
@@ -286,6 +287,9 @@
 	  <div class="issue" title="Privacy issues?">
 	    The above four fields return information about the payer and buyer, are there any privacy implications for these?
 	  </div>
+		<dt><dfn><code>authorizationToken</code></dfn></dt>
+	  <dd>Due to some regulation Credit Transfer coulb be eihter initiated by the owner of the account (standard procedure) or by a regulated third party. This Third party could be the Payee's bank or dedicated Payment Initiation Service Provider (PISP according to european regulation. The autorizationToken is used to enable this third party to initialize the credit transfer after completion of the web flows. </dd>
+		
 	</dl>
 	
       </section>
