@@ -129,7 +129,7 @@
 	  sequence&lt;DOMString&gt; supportedNetworks;
 	  sequence&lt;DOMString&gt; supportedCountries;
 	    
-          required DOMString payeeIBAN;
+          required DOMString payeeAccountNumber;
 	  DOMString payeeName;
 	  DOMString payeeAddress;
 	  required DOMString payeeBankCode;
@@ -168,17 +168,17 @@
 	  <dd>The supportedCountries field contains a sequence of [[!CLDR]] identifiers of countries from which the merchant accepts credit transfers. This field is optional. If a value is not provided then the merchant accepts credit transfers from any country. 
 	  </dd>
 
-	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
+	  <dt><dfn><code>payeeAccountNumber</code></dfn></dt>
 	  <dd>This field indicates the account number of the payee (the merchant) that will be used for the credit transfer. This will typically be an IBAN number, or a domestic account number for those countries that do not use IBAN.</dd>
 
 	  <dt><dfn><code>payeeBankCode</code></dfn></dt>
-	  <dd>The Bank code of the payee that should be used along the “payeeIBAN” in order to send the Credit Transfer.</dd>
+	  <dd>The Bank code of the payee that should be used along the “payeeAccountNumber” in order to send the Credit Transfer.</dd>
 
 	  <dt><dfn><code>payeeName</code></dfn></dt>
-	  <dd>The name of the payee known to the bank that holds the account describe by “payeeIBAN”.</dd>
+	  <dd>The name of the payee known to the bank that holds the account describe by “payeeAccountNumber”.</dd>
 		  
 	  <dt><dfn><code>payeeAddress</code></dfn></dt>
-	  <dd>The address of the payee known by the bank that holds the account describe by “payeeIBAN”.</dd>
+	  <dd>The address of the payee known by the bank that holds the account describe by “payeeAccountNumber”.</dd>
 
 	  <dt><dfn><code>payeeIdentificationCode</code></dfn></dt>
 	  <dd>An identification code provided by the payee.</dd>
@@ -267,7 +267,7 @@
 	    to the payer.</dd>
 	  
 	  <dt><dfn><code>payerBankCode</code></dfn></dt>
-	  <dd>The code of the bank which send the Credit Transfer. It could be the BIC or any other Bank code</dd>
+	  <dd>The code of the bank which send the Credit Transfer. It could be the BIC, like for SEPA, or any other Bank code</dd>
 		
 	  <dt><dfn><code>selectedNetwork</code></dfn></dt>
 	  <dd>The network used by the originator to send the credit transfer</dd>
@@ -311,10 +311,10 @@
 	    <th>supportedNetworks</th><td>AT-40: Identification code of the Scheme</td>
 	  </tr>
 	  <tr>
-	    <th>payeeIBAN</th><td>AT-20: The IBAN of the account of the Beneficiary.</td>
+	    <th>payeeAccountNumber</th><td>AT-20: The IBAN of the account of the Beneficiary.</td>
 	  </tr>
 	  <tr>
-	    <th>payeeBankCode</th><td>AT-23: the BIC code of the beneficiary. Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the Bank Code of his account.
+	    <th>payeeBankCode</th><td>AT-23: the BIC code of the beneficiary. Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the BIC of his account.
 This field could be also used with another format of “bank identification code” for countries not using BIC.</td>
 	  </tr>
 	  <tr>
