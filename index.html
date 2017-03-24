@@ -132,7 +132,7 @@
           required DOMString payeeIBAN;
 	  DOMString payeeName;
 	  DOMString payeeAddress;
-	  required DOMString payeeBIC;
+	  required DOMString payeeBankCode;
 	  DOMString payeeIdentificationCode;
 
 	  DOMString payeePaymentIdentificationHumanReadable;
@@ -171,7 +171,7 @@
 	  <dt><dfn><code>payeeIBAN</code></dfn></dt>
 	  <dd>This field indicates the account number of the payee (the merchant) that will be used for the credit transfer. This will typically be an IBAN number, or a domestic account number for those countries that do not use IBAN.</dd>
 
-	  <dt><dfn><code>payeeBIC</code></dfn></dt>
+	  <dt><dfn><code>payeeBankCode</code></dfn></dt>
 	  <dd>The Bank code of the payee that should be used along the “payeeIBAN” in order to send the Credit Transfer.</dd>
 
 	  <dt><dfn><code>payeeName</code></dfn></dt>
@@ -241,7 +241,7 @@
 	  dictionary CreditTransferResponse {
 	  required	DOMString selectedProcessingDate;
 	  required	DOMString payerPaymentIdentification;
-	  required	DOMString payerBIC;
+	  required	DOMString payerBankCode;
 	  required	DOMString selectedNetwork;
 	  DOMString  	payerIdentificationCode;
 	  DOMString     payerName;
@@ -266,8 +266,8 @@
 	    payer must define the internal structure of this reference; it can only be expected to be meaningful
 	    to the payer.</dd>
 	  
-	  <dt><dfn><code>payerBIC</code></dfn></dt>
-	  <dd>The BIC code of the bank which send the Credit Transfer</dd>
+	  <dt><dfn><code>payerBankCode</code></dfn></dt>
+	  <dd>The code of the bank which send the Credit Transfer. It could be the BIC or any other Bank code</dd>
 		
 	  <dt><dfn><code>selectedNetwork</code></dfn></dt>
 	  <dd>The network used by the originator to send the credit transfer</dd>
@@ -314,7 +314,7 @@
 	    <th>payeeIBAN</th><td>AT-20: The IBAN of the account of the Beneficiary.</td>
 	  </tr>
 	  <tr>
-	    <th>payeeBIC</th><td>AT-23: the BIC code of the beneficiary. Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the BIC of his account.
+	    <th>payeeBankCode</th><td>AT-23: the BIC code of the beneficiary. Note: Even if the BIC could be derived from the IBAN in most of SEPA country, it may be not the case in others, so this field is important. The merchant should know the Bank Code of his account.
 This field could be also used with another format of “bank identification code” for countries not using BIC.</td>
 	  </tr>
 	  <tr>
@@ -367,7 +367,7 @@ This field could be also used with another format of “bank identification code
 	    <th>payerPaymentIdentification</th><td>AT-41: The Originator’s reference of the Credit Transfer Transaction (End to End Identification in ISO20022 definition)</td>
 	  </tr>
 	  <tr>
-	    <th>payerBIC</th><td>AT-06: The BIC of the Originator </td>
+	    <th>payerBankCode</th><td>AT-06: The BIC of the Originator </td>
 	  </tr>
 	  <tr>
 	    <th>selectedNetwork</th><td>AT-40:  Identification code of the Scheme </td>
