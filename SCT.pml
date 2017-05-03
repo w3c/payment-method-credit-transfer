@@ -43,11 +43,12 @@ available in CreditTransferRequest then payeePaymentIdentificationMachineReadabl
 be privileged into the SEPA Credit Transfer
 end note
 
-CPSP-[#black]>Payer: [Optional] Payment Completion Status
-
 == Notification ==
 
+CPSP-[#black]>Payer: [Optional] Payment Completion Status
+
 MPSP->Payee: Payment Completion Status
+
 Payee-[#black]>Payer: [Optional] Payment Completion Status
 
 == Delivery of Product ==
