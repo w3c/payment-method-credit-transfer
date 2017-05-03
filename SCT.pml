@@ -48,6 +48,7 @@ end note
 CPSP-[#black]>Payer: [Optional] Payment Completion Status
 
 MPSP->Payee: Payment Completion Status
+
 Payee-[#black]>Payer: [Optional] Payment Completion Status
 
 == Delivery of Product ==
