@@ -695,6 +695,23 @@
         </ul>
       </section>
     </section>
+    <section id="examples">
+      <h2>
+        Examples
+      </h2>
+      <pre class="example" title="BACS (UK) Example">
+        
+                const CreditTransferRequest = {
+                        supportedNetworks: ["BACS"],
+                        payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
+                        payeeName: "Bob Ltd.", // Merchant name
+                        payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
+                        payeeIdentificationCode: "Payment from Alice, account number abcdef", // optional payment reference, can be overridden by Alice
+                        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference
+                }
+        
+                </pre>
+    </section>
     <section id="design-considerations">
       <h2>
         Appendix: Design Considerations
@@ -754,23 +771,6 @@
         Laurent Castillo (Gemalto), Kris Ketels (Swift), Frédéric Meignien
         (Canton Consulting).
       </p>
-    </section>
-    <section id="examples">
-      <h2>
-        Examples
-      </h2>
-      <pre class="example" title="BACS (UK) Example">
-        
-                const CreditTransferRequest = {
-                        supportedNetworks: ["BACS"],
-                        payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
-                        payeeName: "Bob Ltd.", // Merchant name
-                        payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
-                        payeeIdentificationCode: "Payment from Alice, account number abcdef", // optional payment reference, can be overridden by Alice
-                        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference
-                }
-        
-                </pre>
     </section>
   </body>
 </html>
