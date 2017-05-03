@@ -142,7 +142,23 @@
         </dd>
       </dl>
     </section>
-
+    <section id="examples">
+      <h2>
+        Examples
+      </h2>
+      <pre class="example" title="BACS (UK) Example">
+        
+                const CreditTransferRequest = {
+                        supportedNetworks: ["BACS"],
+                        payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
+                        payeeName: "Bob Ltd.", // Merchant name
+                        payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
+                        payeeIdentificationCode: "Payment from Alice, account number abcdef", // optional payment reference, can be overridden by Alice
+                        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference
+                }
+        
+      </pre>
+    </section>
     <section id="method-id">
       <h2>
         Payment Method Identifier
@@ -152,7 +168,6 @@
         Transfer Payment method is <dfn><code>credit-transfer</code></dfn>.
       </p>
     </section>
-    
     <section data-dfn-for="PaymentRequest" data-link-for="PaymentRequest">
       <h2>
         Payment Method Specific Data for the PaymentRequest constructor
@@ -359,10 +374,10 @@
           <dfn>CreditTransferResponse</dfn> dictionary
         </h3>
         <p>
-          The CreditTransferResponse message means that a message has
-          been submitted to the Payee's Bank, not that funds transfer has
-          occurred. The merchant should wait for notification from its Bank
-          that the payment has cleared.
+          The CreditTransferResponse message means that a message has been
+          submitted to the Payee's Bank, not that funds transfer has occurred.
+          The merchant should wait for notification from its Bank that the
+          payment has cleared.
         </p>
         <pre class="idl"> 
           dictionary CreditTransferResponse {
@@ -694,23 +709,6 @@
           </li>
         </ul>
       </section>
-    </section>
-    <section id="examples">
-      <h2>
-        Examples
-      </h2>
-      <pre class="example" title="BACS (UK) Example">
-        
-                const CreditTransferRequest = {
-                        supportedNetworks: ["BACS"],
-                        payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
-                        payeeName: "Bob Ltd.", // Merchant name
-                        payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
-                        payeeIdentificationCode: "Payment from Alice, account number abcdef", // optional payment reference, can be overridden by Alice
-                        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference
-                }
-        
-                </pre>
     </section>
     <section id="design-considerations">
       <h2>
