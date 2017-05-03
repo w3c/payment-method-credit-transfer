@@ -40,12 +40,15 @@ CPSP->MPSP: Transfer Funds
 note over PSPUI
 if payeePaymentIdentificationUserReadable  and payeePaymentIdentificationMachineReadable
 available in CreditTransferRequest then payeePaymentIdentificationMachineReadable should
-be privilegied into the SEPA Credit Transfer
+be privileged into the SEPA Credit Transfer
 end note
+
+CPSP-[#black]>Payer: [Optional] Payment Completion Status
 
 == Notification ==
 
-MPSP->Payee: Payment Completetion Status
+MPSP->Payee: Payment Completion Status
+Payee-[#black]>Payer: [Optional] Payment Completion Status
 
 == Delivery of Product ==
 
