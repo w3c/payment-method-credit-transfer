@@ -164,8 +164,12 @@
         Payment Method Identifier
       </h2>
       <p>
-        The <a>payment method identifier</a> string for the Basic Credit
-        Transfer Payment method is <dfn><code>credit-transfer</code></dfn>.
+        The <a>payment method identifier</a> strings for Credit
+        Transfer Payment methods are 
+		<p><dfn><code>push-credit-transfer</code></dfn>,</p>
+		<p><dfn><code>pull-credit-transfer</code></dfn>.</p>
+		
+		<p>A further <dfn><code>basic-credit-transfer</code></dfn> which is a form-fill replacement may be added depending on demand.</p>
       </p>
     </section>
     <section data-dfn-for="CreditTransferRequest" data-link-for=
@@ -466,11 +470,14 @@
             <dfn>authorizationToken</dfn> member
           </dt>
           <dd>
-            Due to some regulation Credit Transfer coulb be eihter initiated by
+            Only returned for <dfn><code>pull-credit-transfer</code></dfn>
+		  </dd>
+		  <dd>
+			Due to some regulation Credit Transfer could be either initiated by
             the owner of the account (standard procedure) or by a regulated
             third party. This Third party could be the Payee's bank or
             dedicated Payment Initiation Service Provider (PISP according to
-            european regulation. The autorizationToken is used to enable this
+            European regulation. The autorizationToken is used to enable this
             third party to initialize the credit transfer after completion of
             the web flows.
           </dd>
