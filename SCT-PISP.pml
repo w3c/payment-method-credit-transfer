@@ -1,7 +1,8 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/w3c/webpayments-flows/gh-pages/PaymentFlows/skin.ipml
 
-participant "Payment Initiation Service Provider" as MPSP
+participant "Payee's Bank" as MPSP
+participant "Payment Initiation Service Provider" as MPIPSP
 Participant "Payee" as Payee
 Actor "Payer" as Payer
 participant "Payment App" as PSPUI
@@ -9,7 +10,7 @@ participant "Payer's Bank" as CPSP
 
 note over Payee, PSPUI: HTTPS
 
-title PISP Initiated SEPA Credit Transfer
+title PISP Initiated Credit Transfer
 
 == Negotiation of Payment Terms & Selection of Payment Instrument ==
 
@@ -36,8 +37,8 @@ end note
 
 PSPUI->Payee: CreditTransferResponse with authorizationToken
 
-Payee -> MPSP : CreditTransferResponse with authorizationToken
-MPSP -> CPSP : Submit Payment Initiation  using authorizationToken
+Payee -> MPIPSP : CreditTransferResponse with authorizationToken
+MPIPSP -> CPSP : Submit Payment Initiation  using authorizationToken
 ...
 == Payment Processing ==
 
@@ -53,7 +54,9 @@ end note
 
 CPSP-[#black]>Payer: [Optional] Payment Completion Status
 
-MPSP->Payee: Payment Completion Status
+MPSP-[#black]>MPIPSP: Payment Completion Status
+
+MPIPSP->Payee: Payment Completion Status
 
 Payee-[#black]>Payer: [Optional] Payment Completion Status
 
