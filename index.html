@@ -146,38 +146,56 @@
       <h2>
         Examples
       </h2>
-	  <h3><a href="https://www.bacs.co.uk/Pages/Home.aspx">BACS</a> Direct Credit Scheme</h3>
-	  <p>A non real-time scheme for UK Domestic payments. The scheme is commonly referred to as simply BACS.</p>
-	  <p>Payments typically take between 3 and 5 days to settle to the destination account and there is no notification, merchants must check their statements and manually reconcile using the 'reference' (<dfn>payeePaymentIdentificationCodeHumanReadable</dfn>)</p>
 
- 	  <h3><a href="http://www.fasterpayments.org.uk/">Faster Payments</a> (UK) Scheme</h3>
-	  <p>Operates similar to BACS, but typically settling in a few hours</p>
+      <section>
+	<h3>Faster Payments UK and BACS</h3>
 
-      <pre class="example" title="BACS and Faster Payments Example">
-        
-                const CreditTransferRequest = {
-                        supportedNetworks: ["BACS", "UKFasterPayments]],
-                        payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
-                        payeeName: "Bob Ltd.", // Merchant name
-                        payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
-                        payeePaymentIdentificationCodeHumanReadable: "Payment from Alice, account number 87654321", // whilst payment reference is optional for BACS scheme, this text is used for reconciliation so the merchant can check they have been paid
-                        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference, not used by BACS scheme, but Payment App can use to dedeplicate
-                }
-        
-      </pre>
+	<pre class="example" title="BACS and Faster Payments Example">
+          
+          const CreditTransferRequest = {
+          supportedNetworks: ["BACS", "UKFasterPayments],
+          supportedInitiators: "payer-initiated",
+          payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
+          payeeName: "Bob Ltd.", // Merchant name
+          payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
+          payeePaymentIdentificationHumanReadable: "Payment from Alice, account number 87654321", // whilst payment reference is optional for BACS scheme, this text is used for reconciliation so the merchant can check they have been paid
+          payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference, not used by BACS scheme, but Payment App can use to dedeplicate
+          }
+         
+	</pre>
+
+
+	<p>This example refers to two credit transfer systems:</p>
+	
+	<ul>
+
+	  <li><a href="https://www.bacs.co.uk/Pages/Home.aspx">BACS</a>
+	      Direct Credit Scheme, a non-realtime scheme for UK
+	      domestic payments. Payments typically take between 3 and
+	      5 days to settle to the destination account and there is
+	      no notification, merchants must check their statements
+	      and manually reconcile using the 'reference'
+	      (<code>payeePaymentIdentificationHumanReadable</code>)</li>
+
+	  <li><a href="http://www.fasterpayments.org.uk/">Faster
+	      Payments (UK) Scheme</a>, which operates similar to
+	      BACS, but typically settling in a few hours.</li>
+	</ul>
+	
+      </section>
+      <section>
+	<h3>SEPA</h3>
+	<p class='issue' title="Add SEPA Example" data-number="52"/>
+      </section>
     </section>
     <section id="method-id">
       <h2>
         Payment Method Identifier
       </h2>
       <p>
-        The <a>payment method identifier</a> strings for Credit
-        Transfer Payment methods are 
-		<p><dfn><code>push-credit-transfer</code></dfn>,</p>
-		<p><dfn><code>pull-credit-transfer</code></dfn>.</p>
-		
-		<p>A further <dfn><code>basic-credit-transfer</code></dfn> which is a form-fill replacement may be added depending on demand.</p>
-      </p>
+        The <a>payment method identifier</a> string for Basic Credit Transfer Payment is <dfn data-dfn-type="dfn" id="dfn-basic-credit-transfer"><code>basic-credit-transfer</code></dfn>.</p>
+      <p class="issue" title="Should we use a URL as a PMI instead of a short string?" data-number="59"/>
+      <p class="issue" title="Do we need a form filler credit transfer payment method?" data-number="61"/>
     </section>
     <section data-dfn-for="CreditTransferRequest" data-link-for=
     "CreditTransferRequest">
@@ -194,10 +212,13 @@
           <dfn>CreditTransferRequest</dfn> dictionary
         </h3>
         <pre class="idl">
+	  enum InitiatorType { "payer-initiated", "payee-initiated" };
+
           dictionary CreditTransferRequest {
              sequence&lt;DOMString&gt; requiredResponseFields;
              sequence&lt;DOMString&gt; supportedNetworks;
              sequence&lt;DOMString&gt; supportedCountries;
+             sequence&lt;InitiatorType&gt; supportedInitiators;
              required DOMString payeeAccountNumber;
              DOMString payeeName;
              DOMString payeeAddress;
@@ -222,12 +243,7 @@
             Contains the list of fields that the Payment App must attempt to
             return, if this requirements cannot be met, e.g., the payment
             instrument must fail as this is a push payment.
-            <div class="issue" title="Failed payment edge cases?">
-              The above field is required, but this can result in failed
-              payments after 'Authorise' clicked. Should we have a better
-              modelling (e.g. using subclasses) to allow for a more
-              fine-grained matching of apps to requests? Does the PMI
-              specification need to support this?
+            <p class="issue" title="Relationship between requiredResponseFields and PR API flow" data-number="164"/>
             </div>
           </dd>
           <dt>
@@ -250,6 +266,20 @@
             identifiers of countries from which the merchant accepts credit
             transfers. This field is optional. If a value is not provided then
             the merchant accepts credit transfers from any country.
+          </dd>
+          <dt>
+            <dfn>supportedInitiators</dfn> member
+          </dt>
+          <dd>
+            The supportedInitiators field contains a sequence of <a data-lt="CreditTransferRequest.InitiatorType">InitiatorType</a> that the merchant accepts. 
+	    <ul>
+	      <li>payer-initiated: The payer initiates the credit transfer.</li>
+	      <li>payee-initiated: The payee (or third party) initiates the credit transfer. In some jurisdictions, credit transfers may be
+	    initiated by a regulated third party such as
+	    the the payee's bank or, under PSD2 in Europe, a Payment Initiation
+	    Service Provider (PISP). When a payment is payee-initiated, the <code>CreditTransferResponse</code> includes an <a data-lt="CreditTransferResponse.authorizationToken">authorizationToken</a>.</li>
+	    </ul>
+	    <p>If the field is not provided, it means the payee accepts all values of InitiatorType.</p>
           </dd>
           <dt>
             <dfn>payeeAccountNumber</dfn> member
@@ -300,12 +330,8 @@
           <dd>
             Remittance information used for automatic matching upon receipt of
             the credit transfer.
+	    <p class="issue" title="payeePaymentIdentificationMachineReadable redundant with PR API id?" data-number="47"></p>
           </dd>
-		  
-		  <div class="issue" title="Duplicate">
-             Do we need this field in addition to the PaymentRequest PaymentDetasilInit.id field  
-          </div>
-		  
           <dt>
             <dfn>sellerName</dfn> member
           </dt>
@@ -351,13 +377,7 @@
             <dfn>preferredProcessingDate</dfn> member
           </dt>
           <dd>
-            The merchant's preferred processing date. See also:
-            SelectedProcessingDate in the CreditTransferResponse.
-          </dd>
-          <dd>
-            <div class="issue" title="Field date type">
-              Date format?
-            </div>
+            The merchant's preferred processing date expressed as "YYYY-MM-DD". See also SelectedProcessingDate in the CreditTransferResponse.
           </dd>
           <dt>
             <dfn>notificationURL</dfn> member
@@ -368,14 +388,6 @@
           </dd>
           <dd></dd>
         </dl>
-        <div class="issue">
-          <p>
-            How do we ensure that fields are not tampered with (e.g., malicious
-            changes to the beneficiary)?. Similarly, it is important that the
-            payeeName not be changed by the payer or the payment app in order
-            to be sure that automatic controls at the payee’s bank will work.
-          </p>
-        </div>
       </section>
     </section>
     <section data-dfn-for="CreditTransferResponse" data-link-for=
@@ -403,6 +415,7 @@
           required      DOMString payerPaymentIdentification;
           required      DOMString payerBankCode;
           required      DOMString selectedNetwork;
+          required      DOMString selectedInitiator;
           DOMString     payerIdentificationCode;
           DOMString     payerName;
           DOMString     buyerIdentificationCode;
@@ -449,6 +462,13 @@
             The network used by the originator to send the credit transfer
           </dd>
           <dt>
+            <dfn>selectedInitiator</dfn> member
+          </dt>
+          <dd>
+            The <code>InitiatorType</code> indicating whether the credit transfer is
+payee-initiated or payer-initiated.
+          </dd>
+          <dt>
             <dfn>payerIdentificationCode</dfn> member
           </dt>
           <dd>
@@ -473,40 +493,40 @@
           <dd>
             The buyer name. The buyer may be a 3rd party to the payer. If the
             payer is paying on behalf of another party.
-            <div class="issue" title="Privacy issues?">
-              The above four fields return information about the payer and
-              buyer, are there any privacy implications for these?
-            </div>
           </dd>
           <dt>
             <dfn>authorizationToken</dfn> member
           </dt>
           <dd>
-            Only returned for <dfn><code>pull-credit-transfer</code></dfn>
-		  </dd>
-		  <dd>
-			Due to some regulation Credit Transfer could be either initiated by
-            the owner of the account (standard procedure) or by a regulated
-            third party. This Third party could be the Payee's bank or
-            dedicated Payment Initiation Service Provider (PISP according to
-            European regulation. The autorizationToken is used to enable this
-            third party to initialize the credit transfer after completion of
-            the web flows.
-          </dd>
+	    Returned when <code>initiator</code>
+	    is <code>payee-initiated</code>, otherwise null. The
+	    authorizationToken enables the payee (or third party) to
+	    initiate the credit transfer.</dd>
         </dl>
+	<p class="issue" title="Status info in response" data-number="164">For payee-initiated transfers, do we need status information in the response?</p>
       </section>
     </section>
-    <section id="mappings">
+    <section id="security-privacy">
+      <h2>Security and Privacy Considerations</h2>
+
+      <p class="issue" title="What mechanisms (if any) do we need to provent data tampering?" data-number="67"/>
+
+      <p>Owners of web sites SHOULD NOT store the payer's information except where warranted, such as storage for future and recurring payments. When information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
+
+    </section>
+    <section id="mapping-sepa">
       <h2>
-        Appendix: Mappings
+        Appendix: Mappings to SEPA
       </h2>
-      <p>
-        This table maps field names used in this specification to relevant
-        fields in other schemes or standards.
-      </p>
+
+      <p>Here we map fields in this specification to to Customer to Bank Credit Transfer Initiation (DS-01) fields defined in <a href=
+          "http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">
+            SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook
+            may impose additional implementation restrictions (e.g., number of
+            characters) not defined in the current specification.</p>
       <section>
         <h3>
-          CreditTransferRequest Fields
+          CreditTransferRequest Fields and SEPA
         </h3>
         <table border="1">
           <tr>
@@ -639,7 +659,7 @@
       </section>
       <section>
         <h3>
-          CreditTransferResponse Fields
+          CreditTransferResponse Fields and SEPA
         </h3>
         <table border="1">
           <tr>
@@ -716,20 +736,13 @@
           </tr>
         </table>
       </section>
-      <section>
-        <h3>
-          Sources
-        </h3>
-        <ul>
-          <li id="map-sepa">Customer to Bank Credit Transfer Initiation (DS-01)
-          specification from <a href=
-          "http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">
-            SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook
-            may impose additional implementation restrictions (e.g., number of
-            characters) not defined in the current specification.
-          </li>
-        </ul>
-      </section>
+    </section>
+    <section id="mapping-iso20022">
+      <h2>
+        Appendix: Mappings to ISO 20022
+      </h2>
+
+      <p class="issue" title=" Provide mapping of field names / value spaces to ISO 20022 fields/values" data-number="53"/>
     </section>
     <section id="design-considerations">
       <h2>
@@ -753,34 +766,32 @@
     </section>
     <section id="flow">
       <h2>
-        Appendix: Credit Transfer Flow Illustrations
+        Appendix: Flow Diagrams
       </h2>
-      <h3>
-        Appendix: Credit Transfer Flow triggered by owner of the account
-      </h3>
-      <p>
-        This diagram illustrates the Push-credit transfer flow, using a SEPA
-        credit transfer as an example.
-      </p>
-      <div>
-        <a href=
-        "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml">
-        <img alt="Push credit transfer flow, SEPA example" width="100%" src=
-        "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"></a>
-      </div>
-      <h3>
-        Appendix: Credit Transfer Flow triggered by payment service provider
-      </h3>
-      <p>
-        This diagram illustrates the Pull-credit transfer flow, using a SEPA
-        credit transfer as an example.
-      </p>
-      <div>
-        <a href=
-        "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml">
-        <img alt="Pull credit transfer flow, SEPA example" width="100%" src=
-        "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"></a>
-      </div>
+      <section>
+	<h3>Payer-initiated</h3> 
+	<p>
+          This diagram illustrates a payer-initiated SEPA transfer.
+	</p>
+	<div>
+          <a href=
+             "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml">
+            <img alt="Push credit transfer flow, SEPA example" width="100%" src=
+		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"></a>
+	</div>
+      </section>
+      <section>
+	<h3>Payee-initiated</h3>
+	<p>
+          This diagram illustrates a payee-initiated SEPA transfer, initiated by the payee's payment service provider.
+	</p>
+	<div>
+          <a href=
+             "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml">
+            <img alt="Pull credit transfer flow, SEPA example" width="100%" src=
+		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"></a>
+	</div>
+      </section>
     </section>
     <section id="acks">
       <h2>
