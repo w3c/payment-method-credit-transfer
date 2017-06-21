@@ -153,8 +153,7 @@
 	<pre class="example" title="BACS and Faster Payments Example">
           
           const CreditTransferRequest = {
-          supportedNetworks: ["BACS", "UKFasterPayments],
-          supportedInitiators: "payer-initiated",
+          supportedNetworks: ["BACS", "UKFasterPayments"],
           payeeAccountNumber: "12345678", // Bob Ltd.'s 8 digit UK bank account number 
           payeeName: "Bob Ltd.", // Merchant name
           payeeBankCode: "12-34-56", // Bob Ltd.'s 6 digit sort code
@@ -188,10 +187,16 @@
 	<p class='issue' title="Add SEPA Example" data-number="52"/>
       </section>
     </section>
-    <section id="method-id">
+
+    <section id="payer-initiated">
       <h2>
-        Payment Method Identifier
+        Payer-Initiated Credit Transfers
       </h2>
+
+    <section id="method-id-payer">
+      <h3>
+        Payment Method Identifier
+      </h3>
       <p>
         The <a>payment method identifier</a> string for Basic Credit Transfer Payment is <dfn data-dfn-type="dfn" id="dfn-basic-credit-transfer"><code>basic-credit-transfer</code></dfn>.</p>
       <p class="issue" title="Should we use a URL as a PMI instead of a short string?" data-number="59"/>
@@ -199,9 +204,9 @@
     </section>
     <section data-dfn-for="CreditTransferRequest" data-link-for=
     "CreditTransferRequest">
-      <h2>
-        Payment Method Specific Data for the PaymentRequest constructor
-      </h2>
+      <h3>
+        Data for the PaymentRequest constructor
+      </h3>
       <p>
         This section describes payment method specific data that is supplied as
         part of the <code>data</code> argument to the PaymentRequest
@@ -212,13 +217,10 @@
           <dfn>CreditTransferRequest</dfn> dictionary
         </h3>
         <pre class="idl">
-	  enum InitiatorType { "payer-initiated", "payee-initiated" };
-
           dictionary CreditTransferRequest {
              sequence&lt;DOMString&gt; requiredResponseFields;
              sequence&lt;DOMString&gt; supportedNetworks;
              sequence&lt;DOMString&gt; supportedCountries;
-             sequence&lt;InitiatorType&gt; supportedInitiators;
              required DOMString payeeAccountNumber;
              DOMString payeeName;
              DOMString payeeAddress;
@@ -244,7 +246,6 @@
             return, if this requirements cannot be met, e.g., the payment
             instrument must fail as this is a push payment.
             <p class="issue" title="Relationship between requiredResponseFields and PR API flow" data-number="164"/>
-            </div>
           </dd>
           <dt>
             <dfn>supportedNetworks</dfn> member
@@ -266,20 +267,6 @@
             identifiers of countries from which the merchant accepts credit
             transfers. This field is optional. If a value is not provided then
             the merchant accepts credit transfers from any country.
-          </dd>
-          <dt>
-            <dfn>supportedInitiators</dfn> member
-          </dt>
-          <dd>
-            The supportedInitiators field contains a sequence of <a data-lt="CreditTransferRequest.InitiatorType">InitiatorType</a> that the merchant accepts. 
-	    <ul>
-	      <li>payer-initiated: The payer initiates the credit transfer.</li>
-	      <li>payee-initiated: The payee (or third party) initiates the credit transfer. In some jurisdictions, credit transfers may be
-	    initiated by a regulated third party such as
-	    the the payee's bank or, under PSD2 in Europe, a Payment Initiation
-	    Service Provider (PISP). When a payment is payee-initiated, the <code>CreditTransferResponse</code> includes an <a data-lt="CreditTransferResponse.authorizationToken">authorizationToken</a>.</li>
-	    </ul>
-	    <p>If the field is not provided, it means the payee accepts all values of InitiatorType.</p>
           </dd>
           <dt>
             <dfn>payeeAccountNumber</dfn> member
@@ -351,18 +338,14 @@
           <dd>
             The purpose of the credit transfer is the underlying reason for the
             credit transfer transaction, i.e. information on the nature of such
-            transaction. Values are drawn from <a href=
-            "https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">
-            ISO20022 External Code Sets</a>.
+            transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.
           </dd>
           <dt>
             <dfn>categoryPurposeCode</dfn> member
           </dt>
           <dd>
             The category purpose of the credit transfer is information on the
-            high level nature of transaction. Values are drawn from <a href=
-            "https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">
-            ISO20022 External Code Sets</a>.
+            high level nature of transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.
           </dd>
           <dt>
             <dfn>chargeBearer</dfn> member
@@ -392,9 +375,9 @@
     </section>
     <section data-dfn-for="CreditTransferResponse" data-link-for=
     "CreditTransferResponse">
-      <h2>
+      <h3>
         Payment Method Response
-      </h2>
+      </h3>
       <p>
         This section describes the response from the PaymentRequest API when a
         user accepts payment with a Basic Credit Transfer payment method.
@@ -415,12 +398,11 @@
           required      DOMString payerPaymentIdentification;
           required      DOMString payerBankCode;
           required      DOMString selectedNetwork;
-          required      DOMString selectedInitiator;
           DOMString     payerIdentificationCode;
           DOMString     payerName;
           DOMString     buyerIdentificationCode;
           DOMString     buyerName;
-          DOMString     authorizationToken;
+          DOMString     statusInformation;
           };
         </pre>
         <dl>
@@ -462,13 +444,6 @@
             The network used by the originator to send the credit transfer
           </dd>
           <dt>
-            <dfn>selectedInitiator</dfn> member
-          </dt>
-          <dd>
-            The <code>InitiatorType</code> indicating whether the credit transfer is
-payee-initiated or payer-initiated.
-          </dd>
-          <dt>
             <dfn>payerIdentificationCode</dfn> member
           </dt>
           <dd>
@@ -495,16 +470,85 @@ payee-initiated or payer-initiated.
             payer is paying on behalf of another party.
           </dd>
           <dt>
+            <dfn>statusInformation</dfn> member
+          </dt>
+          <dd>
+            Optional payment status information (e.g., whether a payment is pending or has completed).
+          </dd>
+        </dl>
+      </section>
+    </section>
+    </section>
+
+    <section id="payee-initiated">
+      <h2>
+        Payeee-Initiated Credit Transfers
+      </h2>
+
+      <p>In this credit transfer method, the payee (or third party)
+	    initiates the credit transfer. In some jurisdictions,
+	    credit transfers may be initiated by a regulated third
+	    party such as the the payee's bank or, under PSD2 in
+	    Europe, a Payment Initiation Service Provider (PISP).</p>
+
+      <p class="note">The Credit Transfer Task Force has suggested
+      that this payment method is sufficiently different in flow and
+      liability that it deserves its own payment method identifier,
+      even if the data requirements are nearly identical.</p>
+
+    <section id="method-id-payee">
+      <h3>
+        Payment Method Identifier
+      </h3>
+
+      <p>
+        The <a>payment method identifier</a> string for Basic Credit Transfer Payment is <dfn data-dfn-type="dfn" id="dfn-payee-credit-transfer"><code>payee-credit-transfer</code></dfn>.</p>
+    </section>
+
+    <section data-dfn-for="PayeeCreditTransferRequest" data-link-for=
+    "PayeeCreditTransferRequest">
+      <h3>
+        Data for the PaymentRequest constructor
+      </h3>
+
+      <p>
+        The data supplied as 
+        part of the <code>data</code> argument to the PaymentRequest
+        constructor is the same as for <code>basic-credit-transfer</code>.
+      </p>
+    </section>
+
+    <section data-dfn-for="PayeeCreditTransferResponse" data-link-for=
+    "PayeeCreditTransferResponse">
+      <h3>
+        Payment Method Response
+      </h3>
+      <p>
+        This section describes the response from the PaymentRequest API when a
+        user accepts payment with a Payee Credit Transfer payment method.
+      </p>
+
+      <section>
+        <h3>
+          <dfn>PayeeCreditTransferResponse</dfn> dictionary
+        </h3>
+
+        <pre class="idl"> 
+          dictionary PayeeCreditTransferResponse: CreditTransferResponse {
+             DOMString     authorizationToken;
+	  };
+	</pre>
+
+        <dl>
+          <dt>
             <dfn>authorizationToken</dfn> member
           </dt>
           <dd>
-	    Returned when <code>initiator</code>
-	    is <code>payee-initiated</code>, otherwise null. The
-	    authorizationToken enables the payee (or third party) to
+	    The authorizationToken enables the payee (or third party) to
 	    initiate the credit transfer.</dd>
-        </dl>
-	<p class="issue" title="Status info in response" data-number="164">For payee-initiated transfers, do we need status information in the response?</p>
+	</dl>
       </section>
+    </section>
     </section>
     <section id="security-privacy">
       <h2>Security and Privacy Considerations</h2>
@@ -519,9 +563,7 @@ payee-initiated or payer-initiated.
         Appendix: Mappings to SEPA
       </h2>
 
-      <p>Here we map fields in this specification to to Customer to Bank Credit Transfer Initiation (DS-01) fields defined in <a href=
-          "http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">
-            SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook
+      <p>Here we map fields in this specification to Customer to Bank Credit Transfer Initiation (DS-01) fields defined in <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook
             may impose additional implementation restrictions (e.g., number of
             characters) not defined in the current specification.</p>
       <section>
@@ -532,7 +574,7 @@ payee-initiated or payer-initiated.
           <tr>
             <th></th>
             <th>
-              <a href="#map-sepa">SEPA</a>
+	      SEPA
             </th>
           </tr>
           <tr>
@@ -665,7 +707,7 @@ payee-initiated or payer-initiated.
           <tr>
             <th></th>
             <th>
-              <a href="#map-sepa">SEPA</a>
+	      SEPA
             </th>
           </tr>
           <tr>
@@ -734,6 +776,14 @@ payee-initiated or payer-initiated.
               Reference Party
             </td>
           </tr>
+          <tr>
+            <th>
+	      statusInformation
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
         </table>
       </section>
     </section>
@@ -742,7 +792,213 @@ payee-initiated or payer-initiated.
         Appendix: Mappings to ISO 20022
       </h2>
 
-      <p class="issue" title=" Provide mapping of field names / value spaces to ISO 20022 fields/values" data-number="53"/>
+
+      <p>Here we map fields in this specification to ISO 20022 fields defined in the <a href="https://www.iso20022.org/payments_dashboard.page">Payments Dashboard</a>.</p>
+
+      <section>
+        <h3>
+          CreditTransferRequest Fields and ISO 20022
+        </h3>
+        <table border="1">
+          <tr>
+            <th></th>
+            <th>
+	      ISO 20022
+            </th>
+          </tr>
+          <tr>
+            <th>
+              supportedNetworks
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeeAccountNumber
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.CreditorAccount.Identification.IBAN
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeeBankCode
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeeName
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.Creditor.Name
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeeAddress
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeeIdentificationCode
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.Creditor.Identification.*
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeePaymentIdentificationHumanReadable
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payeePaymentIdentificationMachineReadable
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              sellerName
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.UltimateCreditor.Name
+            </td>
+          </tr>
+          <tr>
+            <th>
+              sellerIdentificationCode
+            </th>
+            <td>
+	      pain.001.PaymentInformation.CreditTransferTransactionInformation.UltimateCreditor.Identification.*
+            </td>
+          </tr>
+          <tr>
+            <th>
+              purposeCode
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.Purpose
+            </td>
+          </tr>
+          <tr>
+            <th>
+              categoryPurposeCode
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.PaymentType.CategoryPurpose
+            </td>
+          </tr>
+          <tr>
+            <th>
+              preferredProcessingDate
+            </th>
+            <td>
+              pain.001.PaymentInformation.RequestedExecutionDate
+            </td>
+          </tr>
+          <tr>
+            <th>
+              notificationURL
+            </th>
+            <td>
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.RelatedRemittanceInformation.RemittanceLocationDetails.ElectronicAddress
+            </td>
+          </tr>
+        </table>
+      </section>
+
+      <section>
+        <h3>
+          CreditTransferResponse Fields and ISO 20022
+        </h3>
+        <table border="1">
+          <tr>
+            <th></th>
+            <th>
+	      ISO 20022
+            </th>
+          </tr>
+          <tr>
+            <th>
+              selectedProcessingDate
+            </th>
+            <td>
+              pain.002.OriginalPaymentInformationAndStatus.TransactionInformationAndStatus.OriginalTransactionReference.RequestedExecutionDate
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payerPaymentIdentification
+            </th>
+            <td>
+              pain.002.OriginalPaymentInformationAndStatus.TransactionInformationAndStatus.OriginalEndToEndId
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payerBankCode
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              selectedNetwork
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payerIdentificationCode
+            </th>
+            <td>
+              pain.002.OriginalPaymentInformationAndStatus.TransactionInformationAndStatus.OriginalTransactionReference.Debtor.Identification.*
+            </td>
+          </tr>
+          <tr>
+            <th>
+              payerName
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+          <tr>
+            <th>
+              buyerIdentificationCode
+            </th>
+            <td>
+              pain.002.OriginalPaymentInformationAndStatus.TransactionInformationAndStatus.OriginalTransactionReference.UltimateDebtor.Identification.*
+            </td>
+          </tr>
+          <tr>
+            <th>
+              buyerName
+            </th>
+            <td>
+              None?
+            </td>
+          </tr>
+	</table>
+      </section>
+
     </section>
     <section id="design-considerations">
       <h2>
@@ -777,7 +1033,7 @@ payee-initiated or payer-initiated.
           <a href=
              "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml">
             <img alt="Push credit transfer flow, SEPA example" width="100%" src=
-		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"></a>
+		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"/></a>
 	</div>
       </section>
       <section>
@@ -789,7 +1045,7 @@ payee-initiated or payer-initiated.
           <a href=
              "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml">
             <img alt="Pull credit transfer flow, SEPA example" width="100%" src=
-		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"></a>
+		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"/></a>
 	</div>
       </section>
     </section>
