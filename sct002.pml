@@ -13,5 +13,5 @@ APSP -> Originator : CustomerPaymentStatusReport
 
 == Bank of Alice credits Bank of Bob ==
 
-APSP -> BPSP : CustomerCreditTransferInitiation
+APSP -> BPSP : FIToFICustormerCreditTransfer
 @enduml
