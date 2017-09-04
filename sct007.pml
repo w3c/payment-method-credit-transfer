@@ -21,7 +21,7 @@ end note
 Originator -> APSP : CustomerCreditTransferInitiation
 APSP -> Originator : CustomerPaymentStatusReport
 
-note left Alice
+note left Originator
 the "PaymentStatusReport" is not sent to the merchant
 end note
 
