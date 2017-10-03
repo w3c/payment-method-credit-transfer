@@ -146,11 +146,11 @@
       <h2>
         Examples
       </h2>
-
       <section>
-	<h3>Faster Payments UK and BACS</h3>
-
-	<pre class="example" title="BACS and Faster Payments Example">
+        <h3>
+          Faster Payments UK and BACS
+        </h3>
+        <pre class="example" title="BACS and Faster Payments Example">
           
           const CreditTransferRequest = {
           supportedNetworks: ["BACS", "UKFasterPayments"],
@@ -161,71 +161,78 @@
           payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference, not used by BACS scheme, but Payment App can use to dedeplicate
           }
          
-	</pre>
-
-
-	<p>This example refers to two credit transfer systems:</p>
-	
-	<ul>
-
-	  <li><a href="https://www.bacs.co.uk/Pages/Home.aspx">BACS</a>
-	      Direct Credit Scheme, a non-realtime scheme for UK
-	      domestic payments. Payments typically take between 3 and
-	      5 days to settle to the destination account and there is
-	      no notification, merchants must check their statements
-	      and manually reconcile using the 'reference'
-	      (<code>payeePaymentIdentificationHumanReadable</code>)</li>
-
-	  <li><a href="http://www.fasterpayments.org.uk/">Faster
-	      Payments (UK) Scheme</a>, which operates similar to
-	      BACS, but typically settling in a few hours.</li>
-	</ul>
-	
+        </pre>
+        <p>
+          This example refers to two credit transfer systems:
+        </p>
+        <ul>
+          <li>
+            <a href="https://www.bacs.co.uk/Pages/Home.aspx">BACS</a> Direct
+            Credit Scheme, a non-realtime scheme for UK domestic payments.
+            Payments typically take between 3 and 5 days to settle to the
+            destination account and there is no notification, merchants must
+            check their statements and manually reconcile using the 'reference'
+            (<code>payeePaymentIdentificationHumanReadable</code>)
+          </li>
+          <li>
+            <a href="http://www.fasterpayments.org.uk/">Faster Payments (UK)
+            Scheme</a>, which operates similar to BACS, but typically settling
+            in a few hours.
+          </li>
+        </ul>
       </section>
       <section>
-	<h3>SEPA</h3>
-	<pre class='example' title="SEPA Example"/>
-	    const CreditTransferRequest = {
-supportedNetworks: ["SEPA"],
-payeeAccountNumber: "FR7617519500040080394739390", // Marcel S.A. 27 digit IBAN bank account number 
-payeeName: "Marcel S.A.", // Merchant name
-payeeBankCode: "CEPAFRPP751", // Marcel S.A. BIC code
-payeePaymentIdentificationHumanReadable: "Achat Livre Victor Hugo ", // this information is for Alice to identify quickly her purchase. Alice's Bank could display this line on the statement
-payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference provided by merchant and used in the endtoEnd field in the SEPA Credit Transfer
-}
- 	 </pre>
+        <h3>
+          SEPA
+        </h3>
+        <pre class='example' title="SEPA Example"></pre>const
+        CreditTransferRequest = { supportedNetworks: ["SEPA"],
+        payeeAccountNumber: "FR7617519500040080394739390", // Marcel S.A. 27
+        digit IBAN bank account number payeeName: "Marcel S.A.", // Merchant
+        name payeeBankCode: "CEPAFRPP751", // Marcel S.A. BIC code
+        payeePaymentIdentificationHumanReadable: "Achat Livre Victor Hugo ", //
+        this information is for Alice to identify quickly her purchase. Alice's
+        Bank could display this line on the statement
+        payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique
+        transaction reference provided by merchant and used in the endtoEnd
+        field in the SEPA Credit Transfer }
       </section>
     </section>
-
     <section id="payer-initiated">
       <h2>
         Payer-Initiated Credit Transfers
       </h2>
-
-    <section id="method-id-payer">
-      <h3>
-        Payment Method Identifier
-      </h3>
-      <p>
-        The <a>payment method identifier</a> string for Basic Credit Transfer Payment is <dfn data-dfn-type="dfn" id="dfn-basic-credit-transfer"><code>basic-credit-transfer</code></dfn>.</p>
-      <p class="issue" title="Should we use a URL as a PMI instead of a short string?" data-number="59"/>
-      <p class="issue" title="Do we need a form filler credit transfer payment method?" data-number="61"/>
-    </section>
-    <section data-dfn-for="CreditTransferRequest" data-link-for=
-    "CreditTransferRequest">
-      <h3>
-        Data for the PaymentRequest constructor
-      </h3>
-      <p>
-        This section describes payment method specific data that is supplied as
-        part of the <code>data</code> argument to the PaymentRequest
-        constructor.
-      </p>
-      <section>
+      <section id="method-id-payer">
         <h3>
-          <dfn>CreditTransferRequest</dfn> dictionary
+          Payment Method Identifier
         </h3>
-        <pre class="idl">
+        <p>
+          The <a>payment method identifier</a> string for Basic Credit Transfer
+          Payment is <dfn data-dfn-type="dfn" id=
+          "dfn-basic-credit-transfer"><code>basic-credit-transfer</code></dfn>.
+        </p>
+        <p class="issue" title=
+        "Should we use a URL as a PMI instead of a short string?" data-number=
+        "59"></p>
+        <p class="issue" title=
+        "Do we need a form filler credit transfer payment method?" data-number=
+        "61"></p>
+      </section>
+      <section data-dfn-for="CreditTransferRequest" data-link-for=
+      "CreditTransferRequest">
+        <h3>
+          Data for the PaymentRequest constructor
+        </h3>
+        <p>
+          This section describes payment method specific data that is supplied
+          as part of the <code>data</code> argument to the PaymentRequest
+          constructor.
+        </p>
+        <section>
+          <h3>
+            <dfn>CreditTransferRequest</dfn> dictionary
+          </h3>
+          <pre class="idl">
           dictionary CreditTransferRequest {
              sequence&lt;DOMString&gt; requiredResponseFields;
              sequence&lt;DOMString&gt; supportedNetworks;
@@ -246,162 +253,181 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
              DOMString notificationURL;
           };
         </pre>
-        <dl>
-          <dt>
-            <dfn>requiredResponseFields</dfn> member
-          </dt>
-          <dd>
-            Contains the list of fields that the Payment App must attempt to
-            return, if this requirements cannot be met, e.g., the payment
-            instrument must fail as this is a push payment.
-            <p class="issue" title="Relationship between requiredResponseFields and PR API flow" data-number="164"/>
-          </dd>
-          <dt>
-            <dfn>supportedNetworks</dfn> member
-          </dt>
-          <dd>
-            The supportedNetworks field contains a sequence of identifiers for
-            credit transfer networks that the merchant accepts. This field is
-            optional. If a value is not provided then the merchant accepts
-            credit transfers from any credit transfer network. <span class=
-            "note">Note: The Web Payments Working Group is still discussing
-            whether and how to maintain a database of supported network
-            identifiers.</span>
-          </dd>
-          <dt>
-            <dfn>supportedCountries</dfn> member
-          </dt>
-          <dd>
-            The supportedCountries field contains a sequence of [[!CLDR]]
-            identifiers of countries from which the merchant accepts credit
-            transfers. This field is optional. If a value is not provided then
-            the merchant accepts credit transfers from any country.
-          </dd>
-          <dt>
-            <dfn>payeeAccountNumber</dfn> member
-          </dt>
-          <dd>
-            This field indicates the account number of the payee (the merchant)
-            that will be used for the credit transfer. This will typically be
-            an IBAN number, or a domestic account number for those countries
-            that do not use IBAN.
-          </dd>
-          <dt>
-            <dfn>payeeBankCode</dfn> member
-          </dt>
-          <dd>
-            The Bank code of the payee that should be used along the
-            “payeeAccountNumber” in order to send the Credit Transfer.
-          </dd>
-          <dt>
-            <dfn>payeeName</dfn> member
-          </dt>
-          <dd>
-            The name of the payee known to the bank that holds the account
-            describe by “payeeAccountNumber”.
-          </dd>
-          <dt>
-            <dfn>payeeAddress</dfn> member
-          </dt>
-          <dd>
-            The address of the payee known by the bank that holds the account
-            describe by “payeeAccountNumber”.
-          </dd>
-          <dt>
-            <dfn>payeeIdentificationCode</dfn> member
-          </dt>
-          <dd>
-            An identification code provided by the payee.
-          </dd>
-          <dt>
-            <dfn>payeePaymentIdentificationHumanReadable</dfn> member
-          </dt>
-          <dd>
-            Human-readable remittance information explaining to the payer what
-            is being paid for.
-          </dd>
-          <dt>
-            <dfn>payeePaymentIdentificationMachineReadable</dfn> member
-          </dt>
-          <dd>
-            Remittance information used for automatic matching upon receipt of
-            the credit transfer.
-	    <p class="issue" title="payeePaymentIdentificationMachineReadable redundant with PR API id?" data-number="47"></p>
-          </dd>
-          <dt>
-            <dfn>sellerName</dfn> member
-          </dt>
-          <dd>
-            The name of a person or company in relation to whom a Beneficiary
-            receives a payment.
-          </dd>
-          <dt>
-            <dfn>sellerIdentificationCode</dfn> member
-          </dt>
-          <dd>
-            A code related to “sellerName”.
-          </dd>
-          <dt>
-            <dfn>purposeCode</dfn> member
-          </dt>
-          <dd>
-            The purpose of the credit transfer is the underlying reason for the
-            credit transfer transaction, i.e. information on the nature of such
-            transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.
-          </dd>
-          <dt>
-            <dfn>categoryPurposeCode</dfn> member
-          </dt>
-          <dd>
-            The category purpose of the credit transfer is information on the
-            high level nature of transaction. Values are drawn from <a href="https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">ISO20022 External Code Sets</a>.
-          </dd>
-          <dt>
-            <dfn>chargeBearer</dfn> member
-          </dt>
-          <dd>
-            The chargeBearer indicate how the chazrge of the credit transfer
-            will be split between the payee and the payer in the following list
-            : OUR (the user will pay), SHARED (the fees are split), BENE (the
-            apyee will pay)
-          </dd>
-          <dt>
-            <dfn>preferredProcessingDate</dfn> member
-          </dt>
-          <dd>
-            The merchant's preferred processing date expressed as "YYYY-MM-DD". See also SelectedProcessingDate in the CreditTransferResponse.
-          </dd>
-          <dt>
-            <dfn>notificationURL</dfn> member
-          </dt>
-          <dd>
-            An end point for payment status updates. This specification does
-            not define how such endpoints will work.
-          </dd>
-          <dd></dd>
-        </dl>
+          <dl>
+            <dt>
+              <dfn>requiredResponseFields</dfn> member
+            </dt>
+            <dd>
+              Contains the list of fields that the Payment App must attempt to
+              return, if this requirements cannot be met, e.g., the payment
+              instrument must fail as this is a push payment.
+              <p class="issue" title=
+              "Relationship between requiredResponseFields and PR API flow"
+              data-number="164"></p>
+            </dd>
+            <dt>
+              <dfn>supportedNetworks</dfn> member
+            </dt>
+            <dd>
+              The supportedNetworks field contains a sequence of identifiers
+              for credit transfer networks that the merchant accepts. This
+              field is optional. If a value is not provided then the merchant
+              accepts credit transfers from any credit transfer network.
+              <span class="note">Note: The Web Payments Working Group is still
+              discussing whether and how to maintain a database of supported
+              network identifiers.</span>
+            </dd>
+            <dt>
+              <dfn>supportedCountries</dfn> member
+            </dt>
+            <dd>
+              The supportedCountries field contains a sequence of [[!CLDR]]
+              identifiers of countries from which the merchant accepts credit
+              transfers. This field is optional. If a value is not provided
+              then the merchant accepts credit transfers from any country.
+            </dd>
+            <dt>
+              <dfn>payeeAccountNumber</dfn> member
+            </dt>
+            <dd>
+              This field indicates the account number of the payee (the
+              merchant) that will be used for the credit transfer. This will
+              typically be an IBAN number, or a domestic account number for
+              those countries that do not use IBAN.
+            </dd>
+            <dt>
+              <dfn>payeeBankCode</dfn> member
+            </dt>
+            <dd>
+              The Bank code of the payee that should be used along the
+              “payeeAccountNumber” in order to send the Credit Transfer.
+            </dd>
+            <dt>
+              <dfn>payeeName</dfn> member
+            </dt>
+            <dd>
+              The name of the payee known to the bank that holds the account
+              describe by “payeeAccountNumber”.
+            </dd>
+            <dt>
+              <dfn>payeeAddress</dfn> member
+            </dt>
+            <dd>
+              The address of the payee known by the bank that holds the account
+              describe by “payeeAccountNumber”.
+            </dd>
+            <dt>
+              <dfn>payeeIdentificationCode</dfn> member
+            </dt>
+            <dd>
+              An identification code provided by the payee.
+            </dd>
+            <dt>
+              <dfn>payeePaymentIdentificationHumanReadable</dfn> member
+            </dt>
+            <dd>
+              Human-readable remittance information explaining to the payer
+              what is being paid for.
+            </dd>
+            <dt>
+              <dfn>payeePaymentIdentificationMachineReadable</dfn> member
+            </dt>
+            <dd>
+              Remittance information used for automatic matching upon receipt
+              of the credit transfer.
+              <p class="issue" title=
+              "payeePaymentIdentificationMachineReadable redundant with PR API id?"
+              data-number="47"></p>
+            </dd>
+            <dt>
+              <dfn>sellerName</dfn> member
+            </dt>
+            <dd>
+              The name of a person or company in relation to whom a Beneficiary
+              receives a payment.
+            </dd>
+            <dt>
+              <dfn>sellerIdentificationCode</dfn> member
+            </dt>
+            <dd>
+              A code related to “sellerName”.
+            </dd>
+            <dt>
+              <dfn>purposeCode</dfn> member
+            </dt>
+            <dd>
+              The purpose of the credit transfer is the underlying reason for
+              the credit transfer transaction, i.e. information on the nature
+              of such transaction. Values are drawn from <a href=
+              "https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">
+              ISO20022 External Code Sets</a>.
+            </dd>
+            <dt>
+              <dfn>categoryPurposeCode</dfn> member
+            </dt>
+            <dd>
+              The category purpose of the credit transfer is information on the
+              high level nature of transaction. Values are drawn from <a href=
+              "https://www.iso20022.org/documents/External_code_lists/ExternalCodeSets_1Q2016_11May2016_v1.xls">
+              ISO20022 External Code Sets</a>.
+            </dd>
+            <dt>
+              <dfn>chargeBearer</dfn> member
+            </dt>
+            <dd>
+              The chargeBearer member indicates how the charge of the credit
+              transfer will be split between the payee. Legal values are:
+              <ul>
+                <li>
+                  <code>OUR</code>: payer pays
+                </li>
+                <li>
+                  <code>SHARED</code>: fees are split
+                </li>
+                <li>
+                  <code>BENE</code>: payee pays
+                </li>
+              </ul>
+            </dd>
+            <dt>
+              <dfn>preferredProcessingDate</dfn> member
+            </dt>
+            <dd>
+              The merchant's preferred processing date expressed as
+              "YYYY-MM-DD". See also SelectedProcessingDate in the
+              CreditTransferResponse.
+            </dd>
+            <dt>
+              <dfn>notificationURL</dfn> member
+            </dt>
+            <dd>
+              An end point for payment status updates. This specification does
+              not define how such endpoints will work.
+            </dd>
+            <dd></dd>
+          </dl>
+        </section>
       </section>
-    </section>
-    <section data-dfn-for="CreditTransferResponse" data-link-for=
-    "CreditTransferResponse">
-      <h3>
-        Payment Method Response
-      </h3>
-      <p>
-        This section describes the response from the PaymentRequest API when a
-        user accepts payment with a Basic Credit Transfer payment method.
-      </p>
-      <section>
+      <section data-dfn-for="CreditTransferResponse" data-link-for=
+      "CreditTransferResponse">
         <h3>
-          <dfn>CreditTransferResponse</dfn> dictionary
+          Payment Method Response
         </h3>
         <p>
-          The CreditTransferResponse message means that a message has been
-          submitted to the Payee's Bank, not that funds transfer has occurred.
-          The merchant should wait for notification from its Bank that the
-          payment has cleared.
+          This section describes the response from the PaymentRequest API when
+          a user accepts payment with a Basic Credit Transfer payment method.
         </p>
-        <pre class="idl"> 
+        <section>
+          <h3>
+            <dfn>CreditTransferResponse</dfn> dictionary
+          </h3>
+          <p>
+            The CreditTransferResponse message means that a message has been
+            submitted to the Payee's Bank, not that funds transfer has
+            occurred. The merchant should wait for notification from its Bank
+            that the payment has cleared.
+          </p>
+          <pre class="idl"> 
           dictionary CreditTransferResponse {
           required      DOMString selectedProcessingDate;
           required      DOMString payerPaymentIdentification;
@@ -414,162 +440,168 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           DOMString     statusInformation;
           };
         </pre>
-        <dl>
-          <dt>
-            <dfn>selectedProcessingDate</dfn> member
-          </dt>
-          <dd>
-            The date for commencing the execution of the payment request. This
-            date may be different from that requested by the Payee, either
-            because of a business rule (e.g., non business day, or a preference
-            from the payee to defer payment
-          </dd>
-          <dt>
-            <dfn>payerPaymentIdentification</dfn> member
-          </dt>
-          <dd>
-            A unique identifier for a given payer each Credit Transfer
-            Transaction presented to the payer Bank. This number will be
-            transmitted in the entire process of the handling of the credit
-            transfer transactions from acceptance until the finality of the
-            transaction. It must be returned in any exception handling
-            process-step by any party involved. The payer cannot request for
-            any other referencing information to be returned to him, in order
-            to identify a credit transfer. The payer must define the internal
-            structure of this reference; it can only be expected to be
-            meaningful to the payer.
-          </dd>
-          <dt>
-            <dfn>payerBankCode</dfn> member
-          </dt>
-          <dd>
-            The code of the bank which send the Credit Transfer. It could be
-            the BIC, like for SEPA, or any other Bank code
-          </dd>
-          <dt>
-            <dfn>selectedNetwork</dfn> member
-          </dt>
-          <dd>
-            The network used by the originator to send the credit transfer
-          </dd>
-          <dt>
-            <dfn>payerIdentificationCode</dfn> member
-          </dt>
-          <dd>
-            A code supplied by the payer.
-          </dd>
-          <dt>
-            <dfn>payerName</dfn> member
-          </dt>
-          <dd>
-            The name of the payer.
-          </dd>
-          <dt>
-            <dfn>buyerIdentificationCode</dfn> member
-          </dt>
-          <dd>
-            The buyer reference. The buyer may be a 3rd party to the payer, if
-            the payer is paying on behalf of another party.
-          </dd>
-          <dt>
-            <dfn>buyerName</dfn> member
-          </dt>
-          <dd>
-            The buyer name. The buyer may be a 3rd party to the payer. If the
-            payer is paying on behalf of another party.
-          </dd>
-          <dt>
-            <dfn>statusInformation</dfn> member
-          </dt>
-          <dd>
-            Payment status information (e.g., whether a payment is pending or has completed).
-          </dd>
-        </dl>
+          <dl>
+            <dt>
+              <dfn>selectedProcessingDate</dfn> member
+            </dt>
+            <dd>
+              The date for commencing the execution of the payment request.
+              This date may be different from that requested by the Payee,
+              either because of a business rule (e.g., non business day, or a
+              preference from the payee to defer payment
+            </dd>
+            <dt>
+              <dfn>payerPaymentIdentification</dfn> member
+            </dt>
+            <dd>
+              A unique identifier for a given payer each Credit Transfer
+              Transaction presented to the payer Bank. This number will be
+              transmitted in the entire process of the handling of the credit
+              transfer transactions from acceptance until the finality of the
+              transaction. It must be returned in any exception handling
+              process-step by any party involved. The payer cannot request for
+              any other referencing information to be returned to him, in order
+              to identify a credit transfer. The payer must define the internal
+              structure of this reference; it can only be expected to be
+              meaningful to the payer.
+            </dd>
+            <dt>
+              <dfn>payerBankCode</dfn> member
+            </dt>
+            <dd>
+              The code of the bank which send the Credit Transfer. It could be
+              the BIC, like for SEPA, or any other Bank code
+            </dd>
+            <dt>
+              <dfn>selectedNetwork</dfn> member
+            </dt>
+            <dd>
+              The network used by the originator to send the credit transfer
+            </dd>
+            <dt>
+              <dfn>payerIdentificationCode</dfn> member
+            </dt>
+            <dd>
+              A code supplied by the payer.
+            </dd>
+            <dt>
+              <dfn>payerName</dfn> member
+            </dt>
+            <dd>
+              The name of the payer.
+            </dd>
+            <dt>
+              <dfn>buyerIdentificationCode</dfn> member
+            </dt>
+            <dd>
+              The buyer reference. The buyer may be a 3rd party to the payer,
+              if the payer is paying on behalf of another party.
+            </dd>
+            <dt>
+              <dfn>buyerName</dfn> member
+            </dt>
+            <dd>
+              The buyer name. The buyer may be a 3rd party to the payer. If the
+              payer is paying on behalf of another party.
+            </dd>
+            <dt>
+              <dfn>statusInformation</dfn> member
+            </dt>
+            <dd>
+              Payment status information (e.g., whether a payment is pending or
+              has completed).
+            </dd>
+          </dl>
+        </section>
       </section>
     </section>
-    </section>
-
     <section id="payee-initiated">
       <h2>
         Payee-Initiated Credit Transfers
       </h2>
-
-      <p>In this credit transfer method, the payee (or third party)
-	    initiates the credit transfer. In some jurisdictions,
-	    credit transfers may be initiated by a regulated third
-	    party such as the the payee's bank or, under PSD2 in
-	    Europe, a Payment Initiation Service Provider (PISP).</p>
-
-    <section id="method-id-payee">
-      <h3>
-        Payment Method Identifier
-      </h3>
-
       <p>
-        The <a>payment method identifier</a> string for Basic Credit Transfer Payment is <dfn data-dfn-type="dfn" id="dfn-payee-credit-transfer"><code>payee-credit-transfer</code></dfn>.</p>
-    </section>
-
-    <section data-dfn-for="PayeeCreditTransferRequest" data-link-for=
-    "PayeeCreditTransferRequest">
-      <h3>
-        Data for the PaymentRequest constructor
-      </h3>
-
-      <p>
-        The data supplied as 
-        part of the <code>data</code> argument to the PaymentRequest
-        constructor is the same as for <code>basic-credit-transfer</code>.
+        In this credit transfer method, the payee (or third party) initiates
+        the credit transfer. In some jurisdictions, credit transfers may be
+        initiated by a regulated third party such as the the payee's bank or,
+        under PSD2 in Europe, a Payment Initiation Service Provider (PISP).
       </p>
-    </section>
-
-    <section data-dfn-for="PayeeCreditTransferResponse" data-link-for=
-    "PayeeCreditTransferResponse">
-      <h3>
-        Payment Method Response
-      </h3>
-      <p>
-        This section describes the response from the PaymentRequest API when a
-        user accepts payment with a Payee Credit Transfer payment method.
-      </p>
-
-      <section>
+      <section id="method-id-payee">
         <h3>
-          <dfn>PayeeCreditTransferResponse</dfn> dictionary
+          Payment Method Identifier
         </h3>
-
-        <pre class="idl"> 
+        <p>
+          The <a>payment method identifier</a> string for Basic Credit Transfer
+          Payment is <dfn data-dfn-type="dfn" id=
+          "dfn-payee-credit-transfer"><code>payee-credit-transfer</code></dfn>.
+        </p>
+      </section>
+      <section data-dfn-for="PayeeCreditTransferRequest" data-link-for=
+      "PayeeCreditTransferRequest">
+        <h3>
+          Data for the PaymentRequest constructor
+        </h3>
+        <p>
+          The data supplied as part of the <code>data</code> argument to the
+          PaymentRequest constructor is the same as for
+          <code>basic-credit-transfer</code>.
+        </p>
+      </section>
+      <section data-dfn-for="PayeeCreditTransferResponse" data-link-for=
+      "PayeeCreditTransferResponse">
+        <h3>
+          Payment Method Response
+        </h3>
+        <p>
+          This section describes the response from the PaymentRequest API when
+          a user accepts payment with a Payee Credit Transfer payment method.
+        </p>
+        <section>
+          <h3>
+            <dfn>PayeeCreditTransferResponse</dfn> dictionary
+          </h3>
+          <pre class="idl"> 
           dictionary PayeeCreditTransferResponse: CreditTransferResponse {
              DOMString     authorizationToken;
-	  };
-	</pre>
-
-        <dl>
-          <dt>
-            <dfn>authorizationToken</dfn> member
-          </dt>
-          <dd>
-	    The authorizationToken enables the payee (or third party) to
-	    initiate the credit transfer.</dd>
-	</dl>
+          };
+        </pre>
+          <dl>
+            <dt>
+              <dfn>authorizationToken</dfn> member
+            </dt>
+            <dd>
+              The authorizationToken enables the payee (or third party) to
+              initiate the credit transfer.
+            </dd>
+          </dl>
+        </section>
       </section>
     </section>
-    </section>
     <section id="security-privacy">
-      <h2>Security and Privacy Considerations</h2>
-
-      <p class="issue" title="What mechanisms (if any) do we need to provent data tampering?" data-number="67"/>
-
-      <p>Owners of web sites SHOULD NOT store the payer's information except where warranted, such as storage for future and recurring payments. When information is stored, web site owners SHOULD take measures to prevent its disclosure.</p>
-
+      <h2>
+        Security and Privacy Considerations
+      </h2>
+      <p class="issue" title=
+      "What mechanisms (if any) do we need to provent data tampering?"
+      data-number="67"></p>
+      <p>
+        Owners of web sites SHOULD NOT store the payer's information except
+        where warranted, such as storage for future and recurring payments.
+        When information is stored, web site owners SHOULD take measures to
+        prevent its disclosure.
+      </p>
     </section>
     <section id="mapping-sepa">
       <h2>
         Appendix: Mappings to SEPA
       </h2>
-
-      <p>Here we map fields in this specification to Customer to Bank Credit Transfer Initiation (DS-01) fields defined in <a href="http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook
-            may impose additional implementation restrictions (e.g., number of
-            characters) not defined in the current specification.</p>
+      <p>
+        Here we map fields in this specification to Customer to Bank Credit
+        Transfer Initiation (DS-01) fields defined in <a href=
+        "http://www.europeanpaymentscouncil.eu/index.cfm/knowledge-bank/epc-documents/sepa-credit-transfer-rulebook-version-81/">
+        SEPA Credit Transfer Rulebook Version 8.1</a>. The SEPA Rulebook may
+        impose additional implementation restrictions (e.g., number of
+        characters) not defined in the current specification.
+      </p>
       <section>
         <h3>
           CreditTransferRequest Fields and SEPA
@@ -578,7 +610,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           <tr>
             <th></th>
             <th>
-	      SEPA
+              SEPA
             </th>
           </tr>
           <tr>
@@ -711,7 +743,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           <tr>
             <th></th>
             <th>
-	      SEPA
+              SEPA
             </th>
           </tr>
           <tr>
@@ -782,7 +814,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           </tr>
           <tr>
             <th>
-	      statusInformation
+              statusInformation
             </th>
             <td>
               None?
@@ -795,10 +827,11 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
       <h2>
         Appendix: Mappings to ISO 20022
       </h2>
-
-
-      <p>Here we map fields in this specification to ISO 20022 fields defined in the <a href="https://www.iso20022.org/payments_dashboard.page">Payments Dashboard</a>.</p>
-
+      <p>
+        Here we map fields in this specification to ISO 20022 fields defined in
+        the <a href="https://www.iso20022.org/payments_dashboard.page">Payments
+        Dashboard</a>.
+      </p>
       <section>
         <h3>
           CreditTransferRequest Fields and ISO 20022
@@ -807,7 +840,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           <tr>
             <th></th>
             <th>
-	      ISO 20022
+              ISO 20022
             </th>
           </tr>
           <tr>
@@ -887,7 +920,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
               sellerIdentificationCode
             </th>
             <td>
-	      pain.001.PaymentInformation.CreditTransferTransactionInformation.UltimateCreditor.Identification.*
+              pain.001.PaymentInformation.CreditTransferTransactionInformation.UltimateCreditor.Identification.*
             </td>
           </tr>
           <tr>
@@ -924,7 +957,6 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           </tr>
         </table>
       </section>
-
       <section>
         <h3>
           CreditTransferResponse Fields and ISO 20022
@@ -933,7 +965,7 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
           <tr>
             <th></th>
             <th>
-	      ISO 20022
+              ISO 20022
             </th>
           </tr>
           <tr>
@@ -1000,9 +1032,8 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
               None?
             </td>
           </tr>
-	</table>
+        </table>
       </section>
-
     </section>
     <section id="design-considerations">
       <h2>
@@ -1029,28 +1060,33 @@ payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction
         Appendix: Flow Diagrams
       </h2>
       <section>
-	<h3>Payer-initiated</h3> 
-	<p>
+        <h3>
+          Payer-initiated
+        </h3>
+        <p>
           This diagram illustrates a payer-initiated SEPA transfer.
-	</p>
-	<div>
+        </p>
+        <div>
           <a href=
-             "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml">
-            <img alt="Push credit transfer flow, SEPA example" width="100%" src=
-		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"/></a>
-	</div>
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml">
+          <img alt="Push credit transfer flow, SEPA example" width="100%" src=
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT.pml"></a>
+        </div>
       </section>
       <section>
-	<h3>Payee-initiated</h3>
-	<p>
-          This diagram illustrates a payee-initiated SEPA transfer, initiated by the payee's payment service provider.
-	</p>
-	<div>
+        <h3>
+          Payee-initiated
+        </h3>
+        <p>
+          This diagram illustrates a payee-initiated SEPA transfer, initiated
+          by the payee's payment service provider.
+        </p>
+        <div>
           <a href=
-             "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml">
-            <img alt="Pull credit transfer flow, SEPA example" width="100%" src=
-		 "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"/></a>
-	</div>
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml">
+          <img alt="Pull credit transfer flow, SEPA example" width="100%" src=
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/webpayments-methods-credit-transfer-direct-debit/gh-pages/SCT-PISP.pml"></a>
+        </div>
       </section>
     </section>
     <section id="acks">
