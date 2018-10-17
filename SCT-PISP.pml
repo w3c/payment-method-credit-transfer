@@ -10,7 +10,7 @@ participant "Payer's Bank" as CPSP
 
 note over Payee, PSPUI: HTTPS
 
-title Payee Initiated Credit Transfer
+title Payer-Initiated Through Payee Credit Transfer
 
 == Negotiation of Payment Terms & Selection of Payment Instrument ==
 
