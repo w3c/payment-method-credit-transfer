@@ -18,7 +18,7 @@ Payee<->Payer: Offer Negotiation
 
 == Payment Initiation ==
 
-Payee->PSPUI: PaymentRequest with CreditTransferRequest
+MPIPSP->PSPUI: PaymentRequest with CreditTransferRequest
 
 PSPUI->CPSP: Submit Payment Initiation Request
 

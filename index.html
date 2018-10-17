@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset='utf-8'>
+    <meta name="generator" content=
+    "HTML Tidy for HTML5 for Apple macOS version 5.6.0">
     <title>
       Credit Transfer Payment
     </title>
-    <meta charset='utf-8'>
     <script src='https://www.w3.org/Tools/respec/respec-w3c-common' async
     class='remove'></script>
     <script class='remove'>
@@ -89,8 +91,8 @@
     <section id='sotd'>
       <p>
         The working group maintains <a href=
-        "https://github.com/w3c/payment-method-credit-transfer/issues">
-        a list of all bug reports that the group has not yet addressed</a>.
+        "https://github.com/w3c/payment-method-credit-transfer/issues">a list
+        of all bug reports that the group has not yet addressed</a>.
       </p>
     </section>
     <section class='informative'>
@@ -186,16 +188,16 @@
           SEPA
         </h3>
         <pre class='example' title="SEPA Example">
-	  const CreditTransferRequest =
-	      { supportedNetworks: ["SEPA"],
+          const CreditTransferRequest =
+              { supportedNetworks: ["SEPA"],
                 payeeAccountNumber: "FR7617519500040080394739390", // Marcel S.A. 27 digit IBAN bank account number
-       	        payeeName: "Marcel S.A.", // Merchant name
-	        payeeBankCode: "CEPAFRPP751", // Marcel S.A. BIC code
+                payeeName: "Marcel S.A.", // Merchant name
+                payeeBankCode: "CEPAFRPP751", // Marcel S.A. BIC code
                 payeePaymentIdentificationHumanReadable: "Achat Livre Victor Hugo ", // this information is for Alice to identify quickly her purchase. Alice's
         Bank could display this line on the statement
                 payeePaymentIdentifierMachineReadable: "abcdefgh123456789" // unique transaction reference provided by merchant and used in the endtoEnd field in the SEPA Credit Transfer
-	       }
-	  </pre>
+               }
+          </pre>
       </section>
     </section>
     <section id="payer-initiated">
@@ -207,8 +209,8 @@
           Payment Method Identifier
         </h3>
         <p>
-          The <a>payment method identifier</a> string for Payer-Initiated Credit Transfer
-          Payment is <dfn data-dfn-type="dfn" id=
+          The <a>payment method identifier</a> string for Payer-Initiated
+          Credit Transfer Payment is <dfn data-dfn-type="dfn" id=
           "dfn-payer-credit-transfer"><code>payer-credit-transfer</code></dfn>.
         </p>
         <p class="issue" title=
@@ -517,7 +519,7 @@
     </section>
     <section id="payee-initiated">
       <h2>
-        Payee-Initiated Credit Transfers
+        Payer-Initiated Through Payee Credit Transfers
       </h2>
       <p>
         In this credit transfer method, the payee (or third party) initiates
@@ -530,8 +532,8 @@
           Payment Method Identifier
         </h3>
         <p>
-          The <a>payment method identifier</a> string for Payee-Initiated Credit Transfer
-          Payment is <dfn data-dfn-type="dfn" id=
+          The <a>payment method identifier</a> string for Payer-Initiated
+          through Payee Credit Transfer Payment is <dfn data-dfn-type="dfn" id=
           "dfn-payee-credit-transfer"><code>payee-credit-transfer</code></dfn>.
         </p>
       </section>
@@ -1072,14 +1074,23 @@
           <img alt="Push credit transfer flow, SEPA example" width="100%" src=
           "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/payment-method-credit-transfer/gh-pages/SCT.pml"></a>
         </div>
+        <p>
+          This diagram illustrates a payer-initiated instant SEPA transfer.
+        </p>
+        <div>
+          <a href=
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/payment-method-credit-transfer/gh-pages/SCT-instant.pml">
+          <img alt="Push credit transfer flow, SEPA example" width="100%" src=
+          "http://www.plantuml.com/plantuml/proxy?fmt=svg&amp;src=https://raw.githubusercontent.com/w3c/payment-method-credit-transfer/gh-pages/SCT-instant.pml"></a>
+        </div>
       </section>
       <section>
         <h3>
-          Payee-initiated
+          Payer-Initiated Through Payee
         </h3>
         <p>
-          This diagram illustrates a payee-initiated SEPA transfer, initiated
-          by the payee's payment service provider.
+          This diagram illustrates a SEPA transfer initiated by the payer
+          through the payee's payment service provider.
         </p>
         <div>
           <a href=
